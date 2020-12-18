@@ -1,0 +1,111 @@
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    width: 1200px;
+    text-align: center;
+}
+html, body {
+    height: 100%;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+
+
+
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: Avenir, sans-serif;
+}
+
+nav{
+    width: 100%;
+    margin: 0px auto 40px auto;
+    background-color: black;
+    position: sticky;
+    top: 0px;
+}
+
+nav ul{
+    list-style-type: none;
+    display: flex;
+}
+
+nav li{
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 13px;
+    text-align: center;/*Centre le texte dans les éléments de menu*/
+}
+
+/*Evite que le menu n'ait une hauteur nulle*/
+nav ul::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+nav a{
+    display: block; /*Toute la surface sera cliquable*/
+    text-decoration: none;
+    color: white;
+    border-bottom: 2px solid transparent;/*Evite le décalage des éléments sous le menu à cause de la bordure en :hover*/
+    padding: 10px 0px;/*Agrandit le menu et espace la bordure du texte*/
+}
+
+nav a:hover{
+    color: gray;
+    border-bottom: 2px solid gray;
+}
+
+nav h1{
+    display: block; /*Toute la surface sera cliquable*/
+    text-decoration: none;
+    color: white;
+    border-bottom: 2px solid transparent;/*Evite le décalage des éléments sous le menu à cause de la bordure en :hover*/
+    padding: 10px 0px;/*Agrandit le menu et espace la bordure du texte*/
+    text-align: center;
+}
+
+
+
+.conteneur{
+    margin: 0px 20px;
+    height: 1500px;
+}
+
+
+.table1 {
+    text-align: center;
+}
+
+
+.table1 th{
+    border:1px dotted gray;
+    padding:10px;
+    margin:10px;
+}
+
+
+.table1 td{
+    border:1px dotted gray;
+    padding:10px;
+    margin:10px;
+    background:white;
+}
+
+label
+{
+	display: block;
+	width: 150px;
+
+}
+
+
+
+
+
