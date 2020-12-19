@@ -1,5 +1,3 @@
-
-
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,20 +19,16 @@
 <html>
     <head>
         <title>JSP Page</title>
-
         <c:choose>
-
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
             </c:when>
             <c:when test = "${user.role.idRole == 1}">
                 <jsp:include page="menu-client.jsp"/>
             </c:when>
-
         </c:choose>
     </head>
     <body>
-
         <c:choose>
             <c:when test = "${user.amende > 0}">
             <td> 
@@ -44,11 +38,22 @@
                 </form>
             </td>
         </c:when>
-    </c:choose>
-               <c:if test="${not empty errorMessage}">
-            <c:out value="${errorMessage}"/>
-        </c:if>
 
+    </c:choose>
+    <c:if test="${not empty errorMessage}">
+        <c:out value="${errorMessage}"/>
+    </c:if>
+
+    <form action="MyServletSearch.do" method="post">  
+        <c:choose>
+            <c:when test = "${user.role.idRole == 4}">
+
+                Rechercher:  <input type="text" name="search"/><br/><br/>  
+                <input type="submit" value=" search ">
+                <input type="hidden" name="search"/>   
+            </c:when>
+        </c:choose>
+    </form>
     <form action="MyServletLivre.do" method="post">  
         <div class="conteneur">
             <table class="table1">
@@ -61,14 +66,11 @@
                     <th>EDITEUR</th>
                     <th>PAGE</th><th>NOTE</th>
                     <th>AVIS</th>
-
                     <c:choose>
                         <c:when test = "${paiementCoti == false && user.amende == 0}">
                             <th>ACTION</th>
                             </c:when>
                         </c:choose>
-
-
                 </tr>
                 <c:forEach items="${listeDeLivre}" var="livre" >
                     <tr>
@@ -90,14 +92,9 @@
                                 <td> 
                                     <input type="submit" value=" louer ">
                                     <input type="hidden" name="idLivreSelected" value="${livre.idLivre}"/>   
-
-
                                 </td>
                             </c:when>
-
-
                         </c:choose>
-
                         </tr>
                     </c:forEach>
             </table>
