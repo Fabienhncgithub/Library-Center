@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Avis;
 import model.Bibliotheque;
 import model.Facade;
+import model.Livre;
 import model.User;
 
 public class MyServletConsulterAvis extends HttpServlet {
@@ -27,9 +28,10 @@ public class MyServletConsulterAvis extends HttpServlet {
         Bibliotheque bibliotheque = (Bibliotheque) request.getSession().getAttribute("bibliotheque");
         User user = (User) request.getSession().getAttribute("user");
         int idLivreSelected = Integer.parseInt(request.getParameter("idLivreSelected"));
+        Livre livre = facade.getLivre().getLivreById(idLivreSelected);
 
         List<Avis> listeAvis = facade.getBiblitoheque().getAllAvisbyIdLivre(idLivreSelected);
-
+request.setAttribute("livre", livre);
         request.setAttribute("listeAvis", listeAvis);
         request.getRequestDispatcher("avisLivre.jsp").forward(request, response);
 

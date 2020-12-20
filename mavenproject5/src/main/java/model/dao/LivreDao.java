@@ -17,8 +17,6 @@ public interface LivreDao {
 
     public List<Livre> getAllLivre();
 
-    public Livre getLivreById(int id);
-
     public List<Livre> getAllLocation(Bibliotheque bibliotheque, User user);
 
     public Livre getLivreByNom(String titreLivreAvis);
@@ -30,6 +28,8 @@ public interface LivreDao {
     public Location getLocationById(int idLocationRendu);
 
     public void rendreLocation(Location location, User user);
+
+    public Livre getLivreById(int idLivreAvis);
 
 
 }

@@ -7,6 +7,7 @@ package model.dao;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import model.Avis;
 import model.Bibliotheque;
 import model.Exemplaire;
@@ -58,7 +59,7 @@ public interface BibliothequeDao {
 
     public List<Faq> listeQuestionByIdBibliotheque(Bibliotheque bibliotheque);
 
-    public List<Livre> searchBook(String searchLivre);
+    public Map<String, Integer> searchBook(String searchLivre);
 
     public List<Location> getAllLocationByIdUserIdBibliotheque(Bibliotheque bibliotheque, User user);
 

@@ -12,9 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import model.Avis;
 import model.Bibliotheque;
 import model.dao.BibliothequeDao;
@@ -25,13 +25,7 @@ import model.Location;
 import model.Role;
 import model.User;
 
-
-
-
-
 //verifier le boolean rendu et le rajouter dans tot les SQL
-
-
 public class MySqlBibliothequeDao implements BibliothequeDao {
 
     private static MySqlBibliothequeDao instance;
@@ -510,30 +504,33 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
     }
 
     @Override
-    public List<Livre> searchBook(String searchLivre) {
-        Connection c;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        c = MySqlDaoFactory.getInstance().getConnection();
-        List<Livre> listRechercheLivre = new ArrayList<>();
+    public Map<String, Integer> searchBook(String searchLivre) {
 
-        String sql = "SELECT * FROM Livre WHERE nomFormation LIKE ?";
+        HashMap<String, Integer> searchResult = new HashMap<>();
+        Connection c;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+
+        String sql = "SELECT livre.titre,count(*)  FROM exemplaire JOIN livre ON exemplaire.idLivre = livre.idLivre  WHERE  livre.titre  LIKE?  GROUP BY livre.titre ";
 
         try {
             ps = c.prepareStatement(sql);
-            ps.setString(1, searchLivre);
+            ps.setString(1,   "%" + searchLivre+ "%" );
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Livre livre = new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("editeur"), rs.getInt("page"));
-                listRechercheLivre.add(livre);
+                  String titre = rs.getString(1);
+                Integer cpt = rs.getInt(2);
+                  searchResult.put(titre, cpt);
             }
         } catch (SQLException sqle) {
             System.err.println("MySqlCentreDAO, method searchBook(String searchLivre) : \n" + sqle.getMessage());
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
-        return listRechercheLivre;
+        return searchResult;
+
 
     }
 
@@ -736,6 +733,5 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
 
         }
     }
-
 
 }

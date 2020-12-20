@@ -8,6 +8,7 @@ package model;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import model.dao.AbstractDaoFactory;
 import model.dao.BibliothequeDao;
 import model.dao.LivreDao;
@@ -226,6 +227,12 @@ public class Bibliotheque {
       AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
         bibliothequeDao.supprimerLocation(location);
+    }
+
+    public Map<String, Integer> searchBook(String search) {
+      AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        return bibliothequeDao.searchBook(search);
     }
 
 

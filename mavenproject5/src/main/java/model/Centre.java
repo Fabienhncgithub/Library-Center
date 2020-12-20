@@ -7,11 +7,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.jws.WebService;
-import model.dao.AbstractDaoFactory;
-import model.dao.BibliothequeDao;
 
-@WebService(name = "CentreWS")
+
 public class Centre {
 
     private List<Bibliotheque> listeDeBiliotheque = new ArrayList<>();
@@ -27,11 +24,7 @@ public class Centre {
         this.listeDeBiliotheque = listeDeBiliotheque;
     }
 
-    public List<Livre> searchBook(String searchLivre) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliDao= factory.createBibliothequeDao();
-        return bibliDao.searchBook(searchLivre);
-    }
+
 }
 
 

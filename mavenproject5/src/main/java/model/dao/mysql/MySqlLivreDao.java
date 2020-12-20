@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Avis;
 import model.Bibliotheque;
 import model.Exemplaire;
@@ -70,10 +68,7 @@ public class MySqlLivreDao implements LivreDao {
         return listForm;
     }
 
-    @Override
-    public Livre getLivreById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     @Override
     public List<Livre> getAllLocation(Bibliotheque bibliotheque, User user) {
@@ -248,5 +243,29 @@ public class MySqlLivreDao implements LivreDao {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
     }
+
+    @Override
+    public Livre getLivreById(int idLivre) {
+        Livre livre = new Livre();
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+        String sql = "SELECT idLivre, titre, editeur, page FROM livre where idLivre = ? ";
+        try {
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, idLivre);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                livre = new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("editeur"), rs.getInt("page"));
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlLivreDAO, method getLivreById(int idLivre): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+        return livre;
+    }
+    
 
 }

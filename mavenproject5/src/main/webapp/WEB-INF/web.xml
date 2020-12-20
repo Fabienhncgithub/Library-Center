@@ -5,9 +5,6 @@
             MyServletLogin.do
         </welcome-file>
     </welcome-file-list>
-    <listener>
-        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
-    </listener>
     <servlet>
         <servlet-name>MyServletLogin</servlet-name>
         <servlet-class>controler.MyServletLogin</servlet-class>
@@ -77,11 +74,6 @@
         <servlet-class>controler.MyServletDisconect</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CentreService</servlet-name>
-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
         <servlet-name>MyServletConsulterAvis</servlet-name>
         <servlet-class>controler.MyServletConsulterAvis</servlet-class>
     </servlet>
@@ -108,6 +100,14 @@
     <servlet>
         <servlet-name>MyServletPayerAmende</servlet-name>
         <servlet-class>controler.MyServletPayerAmende</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyServletSearch</servlet-name>
+        <servlet-class>controler.MyServletSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>controler.UploadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MyServletLogin</servlet-name>
@@ -178,10 +178,6 @@
         <url-pattern>/MyServletDisconect.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CentreService</servlet-name>
-        <url-pattern>/CentreService</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>MyServletConsulterAvis</servlet-name>
         <url-pattern>/MyServletConsulterAvis.do</url-pattern>
     </servlet-mapping>
@@ -208,6 +204,14 @@
     <servlet-mapping>
         <servlet-name>MyServletPayerAmende</servlet-name>
         <url-pattern>/MyServletPayerAmende.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyServletSearch</servlet-name>
+        <url-pattern>/MyServletSearch.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/UploadServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

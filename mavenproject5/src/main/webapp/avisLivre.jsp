@@ -2,7 +2,7 @@
 
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -18,6 +18,7 @@
                 <jsp:include page="menu-client.jsp"/>
             </c:when>
         </c:choose>
+         <h1>Avis sur le livre  ${livre.titre} </h1>
     </head>
     <body>
         <div class="conteneur">

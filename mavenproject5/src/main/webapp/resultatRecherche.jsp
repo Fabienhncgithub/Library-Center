@@ -21,19 +21,25 @@
     </c:choose>
 </head>
 <body>
-
-    <p>Question : </p>
-    <p>${QuestionSelected}</p>
-
-    <p>Votre réponse : </p>
-    <form action="MyServletRepondreMessagerie.do" method="post">
-        <label for="reponse">  réponse : </label><textarea type="text" name="reponse"></textarea><br/>
-        <input type="submit" value=" repondre "/>
-             <input type="hidden" name="idQuestion" value="${idQuestionSelected}"/>
+        <h1>Resultat de votre recherche</h1>
         
-    </form>
+        <div class="conteneur">
+            <table class="table1">
+      
+                <tr>
+                    <th>TITRE</th>
+                    <th>NOMBRE D'EXEMPLAIRE</th>
 
-
-
-</body>
+                </tr>
+                <c:forEach items="${searchResult}" var="exemplaire" >
+                    <tr>
+                        <td>${exemplaire.key}</td>
+                        <td>${exemplaire.value}</td>
+                        </form>
+                        </tr>
+                    </c:forEach>
+            </table>
+        </div>
+        
+    </body>
 </html>

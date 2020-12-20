@@ -176,4 +176,6 @@ public class Livre {
          livreDao.rendreLocation(location, user);
     }
 
+
+
 }

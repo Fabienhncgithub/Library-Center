@@ -16,7 +16,7 @@
 
 
 
-        <p>${listAllLocationBibliotheque}</p>
+        <p>${test}</p>
 
 
 
