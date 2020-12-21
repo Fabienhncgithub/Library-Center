@@ -1,3 +1,4 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,6 +30,7 @@
         </c:choose>
     </head>
     <body>
+        
         <c:choose>
             <c:when test = "${user.amende > 0}">
             <td> 
@@ -49,14 +51,14 @@
             <c:when test = "${user.role.idRole == 4}">
 
                 Rechercher:  <input type="text" name="search"/><br/><br/>  
-                <input type="submit" value=" search ">
+                <input type="submit" value=" search " class="btn btn-unique btn-rounded btn-sm my-0">
                 <input type="hidden" name="search"/>   
             </c:when>
         </c:choose>
     </form>
     <form action="MyServletLivre.do" method="post">  
         <div class="conteneur">
-            <table class="table1">
+            <table class="table table-striped">
                 <c:if test="${not empty errorMessage}">
                     <c:out value="${errorMessage}"/>
                 </c:if>
@@ -82,7 +84,7 @@
                         </form>
                     <form action="MyServletConsulterAvis.do" method="post">
                         <td> 
-                            <input type="submit" value=" avis ">
+                            <input type="submit" value=" avis " class="btn btn-primary btn-sm">
                             <input type="hidden" name="idLivreSelected" value="${livre.idLivre}"/>        
                         </td>
                     </form>
@@ -90,7 +92,7 @@
                         <c:choose>
                             <c:when test = "${paiementCoti == false && user.amende == 0}">
                                 <td> 
-                                    <input type="submit" value=" louer ">
+                                    <input type="submit" value=" louer " class="btn btn-secondary btn-sm">
                                     <input type="hidden" name="idLivreSelected" value="${livre.idLivre}"/>   
                                 </td>
                             </c:when>
