@@ -1,4 +1,4 @@
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -54,7 +54,7 @@
     <body>
         <form action="MyServletExemplaire.do" method="post">  
             <div class="conteneur">
-                <table class="table1">
+                         <table class="table table-striped">
                     <c:if test="${not empty errorMessage}">
                         <c:out value="${errorMessage}"/>
                     </c:if>

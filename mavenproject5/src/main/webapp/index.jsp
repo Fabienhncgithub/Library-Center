@@ -1,9 +1,4 @@
-<%-- 
-    Document   : index
-    Created on : 30 oct. 2020, 15:36:44
-    Author     : Fabien
---%>
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <link href="css/style.css" rel="stylesheet" type="text/css">
@@ -46,8 +41,8 @@
                 </div>
                 <!<!-- ACTIONS -->
                 <div class="actions">
-                    <a href="SignIn.jsp">Sign in</a>
-                    <input type="submit" value="login"/>
+                    <a href="SignIn.jsp" class="btn btn-outline-primary">Sign in</a>
+                    <input type="submit" value="login" class="btn btn-outline-primary"/>
                 </div>
             </form>
             <c:if test="${not empty errorMessage}">

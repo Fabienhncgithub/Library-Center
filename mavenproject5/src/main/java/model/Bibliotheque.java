@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import model.dao.AbstractDaoFactory;
 import model.dao.BibliothequeDao;
-import model.dao.LivreDao;
 
 /**
  *
@@ -235,8 +234,5 @@ public class Bibliotheque {
         return bibliothequeDao.searchBook(search);
     }
 
-
-    
-    
 
 }

@@ -2,7 +2,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <nav id="menu">        
-    <div class="element_menu">
+   
+        
         <ul>
             <li><a href='MyServletManageBibliotheque.do'>Créer une bibliothèque</a></li>
             <li><a href='MyServletManageManager.do'>Créer un profil</a></li>
