@@ -5,8 +5,12 @@
  */
 package controler;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,12 +18,17 @@ import model.Bibliotheque;
 import model.Exemplaire;
 import model.Facade;
 import model.Livre;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-/**
- *
- * @author Fabien
- */
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 15 // 15 MB
+)
+
 public class MyServletAddBook extends HttpServlet {
 
     Facade facade = new Facade();
@@ -30,6 +39,7 @@ public class MyServletAddBook extends HttpServlet {
 
         /* TODO Supprimer le type? rajouter un exemplaier si il existe pas sinon livre*/
         request.getRequestDispatcher("addBook.jsp").forward(request, response);
+
     }
 
     @Override
@@ -38,57 +48,90 @@ public class MyServletAddBook extends HttpServlet {
 
         Bibliotheque bibliotheque = (Bibliotheque) request.getSession().getAttribute("bibliotheque");
 
-        Exemplaire exemplaire = new Exemplaire();
-        Livre livre = new Livre();
-
-        livre.setTitre(request.getParameter("titre"));
-        livre.setAuteur(request.getParameter("auteur"));
-        livre.setEditeur(request.getParameter("editeur"));
-        livre.setPage(Integer.parseInt(request.getParameter("page")));
-        livre.setPrixAchat(Integer.parseInt(request.getParameter("prix")));
-        if (facade.getLivre().getLivreByNom("titre") != null) {
-            livre.setIdLivre(facade.getLivre().getLivreByNom("titre").getIdLivre());
-        }
-
-        exemplaire.setLivre(livre);
-        exemplaire.setType(request.getParameter("type"));
-
-        facade.getUser().addBook(exemplaire, bibliotheque);
-
         if (!ServletFileUpload.isMultipartContent(request)) {
             throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
         }
+
+        ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+        PrintWriter writer = response.getWriter();
+
+        try {
+            List<FileItem> items = uploadHandler.parseRequest(request);
+            String titre = "";
+            String auteur = "";
+            String editeur = "";
+            String type = "";
+            String path = "";
+            String prix = "";
+            String page = "";
+            for (FileItem item : items) {
+                if (!item.isFormField()) {
+                    String pathPdf = "C:\\Users\\Fabien\\Documents\\NetBeansProjects\\Office365-Java-Connect2\\mavenproject5\\src\\main\\webapp\\picture";
+                    File file = new File(pathPdf, item.getName());
+                    item.write(file);
+                    path = file.getAbsolutePath();
+                } else {
+                    switch (item.getFieldName()) {
+                        case "titre":
+                            titre = item.getString();
+                            break;
+                        case "auteur":
+                            auteur = item.getString();
+                            break;
+                        case "editeur":
+                            editeur = item.getString();
+                            break;
+                        case "type":
+                            type = item.getString();
+                            break;
+                        case "prix":
+                            prix = item.getString();
+                            break;
+                        case "page":
+                            page = item.getString();
+                            break;
+                    }
+                }
+            }
+
+            Exemplaire exemplaireLivre = new Exemplaire();
+            Exemplaire exemplaireEbook = new Exemplaire();
+            Livre livre = new Livre();
+
+            livre.setTitre(titre);
+            livre.setAuteur(auteur);
+            livre.setEditeur(editeur);
+            livre.setPage(Integer.parseInt(page));
+            livre.setPrixAchat(Integer.parseInt(prix));
+//            if (facade.getLivre().getLivreByNom("titre") != null) {
+//                livre.setIdLivre(facade.getLivre().getLivreByNom("titre").getIdLivre());
+//            }
+
+            exemplaireLivre.setLivre(livre);
+            exemplaireLivre.setType(type);
+            exemplaireLivre.setPath("");
+
+            exemplaireEbook.setLivre(livre);
+            exemplaireEbook.setType(type);
+            exemplaireEbook.setPath(path);
+
+            //facade.getUser().addBook(exemplaireEbook, bibliotheque);
+            if (type.equals("livre")) {
+                facade.getUser().addBook(exemplaireLivre, bibliotheque);
+                System.out.println(exemplaireLivre);
+            } else {
+                facade.getUser().addBook(exemplaireEbook, bibliotheque);
+                System.out.println(exemplaireEbook);
+            }
+
+        } catch (FileUploadException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+
+            writer.close();
+            response.sendRedirect(request.getContextPath() + "/MyServletAddbook.do");
+        }
     }
 }
-
-//String message;
-//
-//  
-//     ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-//     PrintWriter writer = response.getWriter();
-//   
-//  //  System.out.println(new File(request.getServletContext().getRealPath("/")+"images/"));
-//     try {
-//         List<FileItem> items = uploadHandler.parseRequest(request);
-//         
-//      
-//         
-//         for (FileItem item : items) {
-//             if (!item.isFormField()) {
-//                     File file = new File(request.getServletContext().getRealPath("/")+"images/", item.getName());
-//                     item.write(file);
-//                     
-//                     System.out.println("uploaded");
-//             }
-//         }
-//     } catch (FileUploadException e) {
-//             throw new RuntimeException(e);
-//     } catch (Exception e) {
-//             throw new RuntimeException(e);
-//     } finally {
-//        
-//         writer.close();
-//     }
-//         
-//    }
-

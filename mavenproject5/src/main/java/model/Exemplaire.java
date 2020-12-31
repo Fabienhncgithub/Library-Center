@@ -16,6 +16,7 @@ public class Exemplaire {
     private Boolean disponible;
     private Boolean rendu;
     private Boolean verifier;
+    private String path;
 
     public Exemplaire(int idExemplaire, String type, Livre livre, Boolean disponible, Boolean rendu, Boolean verifier) {
         this.idExemplaire = idExemplaire;
@@ -25,6 +26,14 @@ public class Exemplaire {
         this.rendu = rendu;
         this.verifier = verifier;
     }
+
+    public Exemplaire(String type, Livre livre, String path) {
+        this.type = type;
+        this.livre = livre;
+        this.path = path;
+    }
+    
+    
     
 
     public Exemplaire(int idExemplaire, String type, Livre livre) {
@@ -87,6 +96,22 @@ public class Exemplaire {
     public void setVerifier(Boolean verifier) {
         this.verifier = verifier;
     }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @Override
+    public String toString() {
+        return "Exemplaire{" + "idExemplaire=" + idExemplaire + ", type=" + type + ", livre=" + livre + ", disponible=" + disponible + ", rendu=" + rendu + ", verifier=" + verifier + ", path=" + path + '}';
+    }
+
+
+    
     
     
 }

@@ -45,8 +45,8 @@ public class MySqlUserDao implements UserDao {
         PreparedStatement ps = null;
         User result = null;
         c = MySqlDaoFactory.getInstance().getConnection();
-                
-                 String sql = "SELECT user.idUser,user.nom, user.prenom, user.email, user.password, role.idRole, role.nomRole, user.adresse, user.amende from user join role on role.idRole = user.role join inscription on user.idUser = inscription.idUser where user.email = ? and user.password  = ? and inscription.idBibliotheque = ?";
+
+        String sql = "SELECT user.idUser,user.nom, user.prenom, user.email, user.password, role.idRole, role.nomRole, user.adresse, user.amende from user join role on role.idRole = user.role join inscription on user.idUser = inscription.idUser where user.email = ? and user.password  = ? and inscription.idBibliotheque = ?";
         try {
             ps = c.prepareStatement(sql);
             ps.setString(1, user.getEmail());
@@ -56,8 +56,8 @@ public class MySqlUserDao implements UserDao {
             if (rs.next()) {
                 result = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
                         new Role(rs.getInt(6), rs.getString(7)),
-                        rs.getString(8),rs.getFloat(9));
-             
+                        rs.getString(8), rs.getFloat(9));
+
             }
         } catch (SQLException sqle) {
             System.out.println("ERROR this USER or PASSWROD DOES NOT WORK..." + sqle.getMessage());
@@ -226,7 +226,7 @@ public class MySqlUserDao implements UserDao {
 
         String sql = "SELECT livre.titre, livre.idLivre FROM livre where livre.titre = ?";
         String sql1 = "INSERT INTO livre(prixAchat, titre, auteur, editeur,  page)  VALUES (?, ?, ?, ?, ?)";
-        String sql2 = "INSERT INTO exemplaire(idLivre, type) VALUES (?,?)";
+        String sql2 = "INSERT INTO exemplaire(idLivre, type, path) VALUES (?,?,?)";
         String sql3 = "INSERT INTO `livrebiliotheque`(`idBibliotheque`, `idExemplaire`) VALUES (?,?)";
 
         try {
@@ -245,31 +245,37 @@ public class MySqlUserDao implements UserDao {
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
-
+                System.out.println("sql1");
+                System.out.println(exemplaire.getPath());
+                System.out.println(rs.getInt(1));
+                System.out.println(exemplaire.getType());
                 ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, rs.getInt(1));
                 ps.setString(2, exemplaire.getType());
+                ps.setString(3, exemplaire.getPath());
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
-
+                System.out.println("sql2");
                 ps = c.prepareStatement(sql3);
                 ps.setInt(1, bibliotheque.getIdBibliotheque());
                 ps.setInt(2, rs.getInt(1));
                 ps.executeUpdate();
-
+                System.out.println("sql3");
             } else {
                 ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, rs.getInt("idLivre"));
                 ps.setString(2, exemplaire.getType());
+                ps.setString(3, exemplaire.getPath());
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
-                rs.next();
-
+                //rs.next();
+                System.out.println("sql2bis");
                 ps = c.prepareStatement(sql3);
                 ps.setInt(1, bibliotheque.getIdBibliotheque());
                 ps.setInt(2, rs.getInt(1));
                 ps.executeUpdate();
+                System.out.println("sql3bis");
             }
         } catch (SQLException sqle) {
             System.err.println("MySqlUserDao, method addBook(Livre livre, int idBibliotheque): \n" + sqle.getMessage());
@@ -406,7 +412,7 @@ public class MySqlUserDao implements UserDao {
             ps.setString(1, user.getEmail());
             ps.setInt(2, user.getIdUser());
             rs = ps.executeQuery();
-            
+
             if (!rs.next()) {
                 result = true;
                 ps = c.prepareStatement(sql2);
@@ -425,8 +431,8 @@ public class MySqlUserDao implements UserDao {
         }
         return result;
     }
-    
-        @Override
+
+    @Override
     public void payerAmende(User user) {
         Connection c = null;
         ResultSet rs = null;
