@@ -47,7 +47,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Rajouter un livre </h1>
+        <h1>Rajouter un Ebook </h1>
         <form id="mydropzone"  action="MyServletAddBook.do" class="dropzone" enctype="multipart/form-data" method="POST" >
 
             <label for="titre">  Titre: </label><input type="text" name="titre" required/><br/>
@@ -56,11 +56,7 @@
             <label for="page"> Page Total:</label><input type="number" name="page" required/><br/>
             <label for="prix">Prix d'achat: </label><input type="text" name="prix" required/><br/>
             <div>
-                <label for="type">selectionner le type ici:</label>
-                <select name="type" >
-                    <option name="type"  value="livre">livre</option>
-                    <option name="type"  value="ebook">ebook</option>
-                </select>
+             
             </div>
             <div id = "dropzonePreview">
                 <input type="file" value="file"/>

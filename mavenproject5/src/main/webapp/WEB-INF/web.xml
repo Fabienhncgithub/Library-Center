@@ -109,6 +109,10 @@
         <servlet-name>UploadServlet</servlet-name>
         <servlet-class>controler.UploadServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyServletAddLivre</servlet-name>
+        <servlet-class>controler.MyServletAddLivre</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MyServletLogin</servlet-name>
         <url-pattern>/MyServletLogin.do</url-pattern>
@@ -212,6 +216,10 @@
     <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>
         <url-pattern>/UploadServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyServletAddLivre</servlet-name>
+        <url-pattern>/MyServletAddLivre.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

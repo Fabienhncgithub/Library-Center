@@ -245,10 +245,6 @@ public class MySqlUserDao implements UserDao {
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
-                System.out.println("sql1");
-                System.out.println(exemplaire.getPath());
-                System.out.println(rs.getInt(1));
-                System.out.println(exemplaire.getType());
                 ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, rs.getInt(1));
                 ps.setString(2, exemplaire.getType());
@@ -256,12 +252,10 @@ public class MySqlUserDao implements UserDao {
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
-                System.out.println("sql2");
                 ps = c.prepareStatement(sql3);
                 ps.setInt(1, bibliotheque.getIdBibliotheque());
                 ps.setInt(2, rs.getInt(1));
                 ps.executeUpdate();
-                System.out.println("sql3");
             } else {
                 ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, rs.getInt("idLivre"));
@@ -270,12 +264,10 @@ public class MySqlUserDao implements UserDao {
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 //rs.next();
-                System.out.println("sql2bis");
                 ps = c.prepareStatement(sql3);
                 ps.setInt(1, bibliotheque.getIdBibliotheque());
                 ps.setInt(2, rs.getInt(1));
                 ps.executeUpdate();
-                System.out.println("sql3bis");
             }
         } catch (SQLException sqle) {
             System.err.println("MySqlUserDao, method addBook(Livre livre, int idBibliotheque): \n" + sqle.getMessage());

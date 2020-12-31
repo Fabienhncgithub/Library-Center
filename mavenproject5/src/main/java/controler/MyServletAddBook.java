@@ -60,7 +60,7 @@ public class MyServletAddBook extends HttpServlet {
             String titre = "";
             String auteur = "";
             String editeur = "";
-            String type = "";
+            String type = "ebook";
             String path = "";
             String prix = "";
             String page = "";
@@ -94,7 +94,7 @@ public class MyServletAddBook extends HttpServlet {
                 }
             }
 
-            Exemplaire exemplaireLivre = new Exemplaire();
+           // Exemplaire exemplaireLivre = new Exemplaire();
             Exemplaire exemplaireEbook = new Exemplaire();
             Livre livre = new Livre();
 
@@ -103,26 +103,23 @@ public class MyServletAddBook extends HttpServlet {
             livre.setEditeur(editeur);
             livre.setPage(Integer.parseInt(page));
             livre.setPrixAchat(Integer.parseInt(prix));
-//            if (facade.getLivre().getLivreByNom("titre") != null) {
-//                livre.setIdLivre(facade.getLivre().getLivreByNom("titre").getIdLivre());
-//            }
 
-            exemplaireLivre.setLivre(livre);
-            exemplaireLivre.setType(type);
-            exemplaireLivre.setPath("");
+//            exemplaireLivre.setLivre(livre);
+//            exemplaireLivre.setType(type);
+//            exemplaireLivre.setPath("");
 
             exemplaireEbook.setLivre(livre);
             exemplaireEbook.setType(type);
             exemplaireEbook.setPath(path);
 
             //facade.getUser().addBook(exemplaireEbook, bibliotheque);
-            if (type.equals("livre")) {
-                facade.getUser().addBook(exemplaireLivre, bibliotheque);
-                System.out.println(exemplaireLivre);
-            } else {
+//            if (type.equals("livre")) {
+//                facade.getUser().addBook(exemplaireLivre, bibliotheque);
+//                System.out.println(exemplaireLivre);
+//            } else {
                 facade.getUser().addBook(exemplaireEbook, bibliotheque);
                 System.out.println(exemplaireEbook);
-            }
+            
 
         } catch (FileUploadException e) {
             throw new RuntimeException(e);
