@@ -23,7 +23,7 @@
     <body>
         <h1>Nous contacter</h1>
         <form action="MyServletQuestion.do" method="post">
-            <label for="avis">  Question : </label><textarea type="text" name="question"></textarea><br/>
+            <label for="avis">  Question : </label><textarea type="text" name="question" required></textarea><br/>
             <input type="submit" value=" ajouter "/>
         </form>
     </body>

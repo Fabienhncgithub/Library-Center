@@ -39,8 +39,8 @@ public class MyServletLogin extends HttpServlet {
             throws ServletException, IOException {
 
         Bibliotheque bibliotheque = new Bibliotheque();
-
         List<Bibliotheque> listeDeBibliotheque = bibliotheque.getAllBibliotheque();
+        
         request.getSession().setAttribute("listeDeBibliotheque", listeDeBibliotheque);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
@@ -49,46 +49,39 @@ public class MyServletLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-          User user = new User();
-        user.setEmail(request.getParameter("email"));
-        user.setPassword(request.getParameter("password"));
-        int idBibliotheque = Integer.parseInt(request.getParameter("bibliotheque"));
-
-      
-
-        Bibliotheque bibliotheque = facade.getBiblitoheque().getBibliothequeById(idBibliotheque);
-
-        /*TODO tester le getbibliothequebyid*/
-//          request.getSession().setAttribute("bibliotheque", bibliotheque);
-//    request.getRequestDispatcher("test.jsp").forward(request, response);
-        user = facade.getUser().authentification(user, bibliotheque);
-
-     //   List<Bibliotheque> listeDeBiblio = facade.getBiblitoheque().getAllBibliotheque();
-
-      
-     
-        request.getSession().setAttribute("user", user);
-        request.getSession().setAttribute("bibliotheque", bibliotheque);
-
-        if (user != null) {
-            String role = user.getRole().getNomRole();
-            switch (role) {
-                case "client":
-                    response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
-                    break;
-                case "bibliothécaire":
-                    request.getRequestDispatcher("menuBibliothécaire.jsp");
-
-                    break;
-                case "admin":
-                    response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
-                    /*TODO a nettoyer*/
-                    break;
-            }
-        } else {
-            String errorMessage = "This user is not register in this biliotheque";
+        String email = request.getParameter("email").trim();
+        String password = request.getParameter("password").trim();
+        String errorMessage;
+        if (email.isEmpty() && password.isEmpty()) {
+            errorMessage = "Please enter username and password";
             request.setAttribute("errorMessage", errorMessage);
             this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+        } else if (email.isEmpty()) {
+            errorMessage = "Please enter valid email";
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+        } else if (password.isEmpty()) {
+            errorMessage = "Please enter valid password";
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+        } else {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            int idBibliotheque = Integer.parseInt(request.getParameter("bibliotheque"));
+            Bibliotheque bibliotheque = facade.getBiblitoheque().getBibliothequeById(idBibliotheque);
+            user = facade.getUser().authentification(user, bibliotheque);
+
+            if (user != null) {
+                request.getSession().setAttribute("user", user);
+                request.getSession().setAttribute("bibliotheque", bibliotheque);
+         
+                response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
+            } else {
+                errorMessage = "This user is not register in this biliotheque";
+                request.setAttribute("errorMessage", errorMessage);
+                this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            }
         }
     }
 }

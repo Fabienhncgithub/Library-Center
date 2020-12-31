@@ -43,30 +43,28 @@ public class MySqlUserDao implements UserDao {
         Connection c = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
-                c = MySqlDaoFactory.getInstance().getConnection();
+        User result = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+                
+                 String sql = "SELECT user.idUser,user.nom, user.prenom, user.email, user.password, role.idRole, role.nomRole, user.adresse, user.amende from user join role on role.idRole = user.role join inscription on user.idUser = inscription.idUser where user.email = ? and user.password  = ? and inscription.idBibliotheque = ?";
         try {
-    
-            String sql = "SELECT user.idUser,user.nom, user.prenom, user.email, user.password, role.idRole, role.nomRole, user.adresse, user.amende from user join role on role.idRole = user.role join inscription on user.idUser = inscription.idUser where user.email = ? and user.password  = ? and inscription.idBibliotheque = ?";
-
             ps = c.prepareStatement(sql);
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ps.setInt(3, bibliotheque.getIdBibliotheque());
             rs = ps.executeQuery();
             if (rs.next()) {
-                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+                result = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
                         new Role(rs.getInt(6), rs.getString(7)),
                         rs.getString(8),rs.getFloat(9));
-                //         user = new User(rs.getInt("idUser"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("password"),
-                //               new Role(rs.getInt("idRole"), rs.getString("nomRole")),
-                //              rs.getString("adresse"));
+             
             }
         } catch (SQLException sqle) {
             System.out.println("ERROR this USER or PASSWROD DOES NOT WORK..." + sqle.getMessage());
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
-        return user;
+        return result;
     }
 
     public void ajoutUser(String login, String password) {

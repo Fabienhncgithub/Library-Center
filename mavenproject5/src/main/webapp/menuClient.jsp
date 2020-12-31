@@ -8,18 +8,11 @@
 
 
 
-<%
-    Enumeration keys = session.getAttributeNames();
-    while (keys.hasMoreElements()) {
-        String key = (String) keys.nextElement();
-        out.println(key + ": " + session.getValue(key) + "<br>");
-    }
-%>
 
 
 <html>
     <head>
-        <title>JSP Page</title>
+             <title>cotisation</title>
         <c:choose>
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
@@ -28,6 +21,7 @@
                 <jsp:include page="menu-client.jsp"/>
             </c:when>
         </c:choose>
+           <h1>Bienvenue ${user.prenom} dans le catalogue de la bibliothèque de ${bibliotheque.nom}</h1>
     </head>
     <body>
         

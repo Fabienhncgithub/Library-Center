@@ -35,7 +35,8 @@ public class MyServletLivre extends HttpServlet {
 
         Boolean paiementCoti = facade.getUser().getStatutCotisation(user, bibliotheque);
         List<Livre> listeDeLivre = facade.getBiblitoheque().getAllLivreByBibliotheque(bibliotheque);
-
+     
+       
         request.setAttribute("paiementCoti", paiementCoti);
         request.setAttribute("listeDeLivre", listeDeLivre);
         request.getRequestDispatcher("menuClient.jsp").forward(request, response);

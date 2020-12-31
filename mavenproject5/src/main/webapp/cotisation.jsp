@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>JSP Page</title>
+        <title>cotisation</title>
         <jsp:include page="menu-client.jsp"/>
     <h1>Payement cotisation</h1>
 </head>

@@ -25,7 +25,7 @@
         <h1>Vous pouvez laissé ici votre avis ou votre note!</h1>
         <p>LIVRE: ${titreLivreAvis}</p>
         <form action="MyServletAvisNote.do" method="post">
-            <label for="avis">  Avis : </label><textarea type="text" name="avis"></textarea><br/>
+            <label for="avis">  Avis : </label><textarea type="text" name="avis" required></textarea><br/>
             <b>Note:</b>
             <select name="note" >
                 <option value="0">0</option>
@@ -34,6 +34,11 @@
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
+                <option value="5">6</option>
+                <option value="5">7</option>
+                <option value="5">8</option><!-- comment -->
+                <option value="5">9</option><!-- comment -->
+                <option value="5">10</option>
             </select>
             <input type="submit" value=" ajouter "/>
         </form>

@@ -17,11 +17,11 @@
 
              <div class="input">
             <p>Manager Bibliotheque</p>
-              <div class="input"><label for="nom">  Nom: </label><input type="text" name="nom"/></div>
-             <div class="input"> <label for="prenom"> Prenom:</label><input type="text" name="prenom"/></div>
-             <div class="input"> <label for="email">  Email:</label><input type="text" name="email"/></div>
-             <div class="input"> <label for="password"> Password:</label><input type="password" name="password"/></div>
-             <div class="input"> <label for="adresse">Adresse:</label><input type="text" name="adresse"/></div>
+              <div class="input"><label for="nom">  Nom: </label><input type="text" name="nom" required/></div>
+             <div class="input"> <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/></div>
+             <div class="input"> <label for="email">  Email:</label><input type="text" name="email" required/></div>
+             <div class="input"> <label for="password"> Password:</label><input type="password" name="password" required/></div>
+             <div class="input"> <label for="adresse">Adresse:</label><input type="text" name="adresse" required/></div>
                  </div>
             <select name="role">
                 <c:forEach items="${listRole}" var="role">

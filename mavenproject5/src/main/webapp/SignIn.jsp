@@ -7,18 +7,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Inscription</title>
     </head>
     <body id="signin">
-        <h1>Page d'enregistrement</h1>
+        <nav>
+            <h1>Inscrivez vous!</h1>
+        </nav>  
 
         <form action="MyServletSignIn.do" method="post">
 
-            <label for="nom">  Nom: </label><input type="text" name="nom"/><br/>
-            <label for="prenom"> Prenom:</label><input type="text" name="prenom"/><br/>
-            <label for="email">  Email:</label><input type="text" name="email"/><br/>
-            <label for="password"> Password:</label><input type="password" name="password"/><br/>
-            <label for="adresse">Adresse:</label><input type="text" name="adresse"/><br/>
+            <label for="nom">  Nom: </label><input type="text" name="nom" required/><br/>
+            <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/><br/>
+            <label for="email">  Email:</label><input type="text" name="email" required/><br/>
+            <label for="password"> Password:</label><input type="password" name="password" required/><br/>
+            <label for="adresse">Adresse:</label><input type="text" name="adresse" required/><br/>
 
 
             <b>Bibliotheque:</b>

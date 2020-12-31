@@ -6,11 +6,13 @@
 <!DOCTYPE html>
 <html>
     <header>
-        <title>JSP</title>
+          <title>Login</title>
+           
     </header>
     <body id="index">
         <nav>
             <h1>Bienvenue dans l'application bibliothèque</h1>
+        
         </nav>  
 
         <!<!-- IMAGE -->
@@ -39,15 +41,23 @@
                         </c:forEach>
                     </select>
                 </div>
+
+                <!<!-- ERROR MESSAGE -->  
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-danger" role="alert">
+                        <c:out value="${errorMessage}"/> 
+                    </div>
+                </c:if>
+
+
                 <!<!-- ACTIONS -->
                 <div class="actions">
                     <a href="SignIn.jsp" class="btn btn-outline-primary">Sign in</a>
                     <input type="submit" value="login" class="btn btn-outline-primary"/>
                 </div>
-            </form>
-            <c:if test="${not empty errorMessage}">
-                <c:out value="${errorMessage}"/>
-            </c:if>
+
+
+            </form>  
         </div>
     </body> 
 </html>

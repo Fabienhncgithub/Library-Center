@@ -20,11 +20,11 @@
 <body>
     <form action="MyServletModifyProfil.do" method="post">
 
-        <label for="nom">  Nom: </label><input type="text" name="nom" value="${user.nom}"/><br/>
-        <label for="prenom"> Prenom:</label><input type="text" name="prenom" value="${user.prenom}"/><br/>
-        <label for="email">  Email:</label><input type="text" name="email"value="${user.email}"/><br/>
-        <label for="password"> Password:</label><input type="text" name="password"value="${user.password}"/><br/>
-        <label for="adresse">Adresse:</label><input type="text" name="adresse" value="${user.adresse}"/><br/>
+        <label for="nom">  Nom: </label><input type="text" name="nom" value="${user.nom}" required/><br/>
+        <label for="prenom"> Prenom:</label><input type="text" name="prenom" value="${user.prenom}" required/><br/>
+        <label for="email">  Email:</label><input type="text" name="email"value="${user.email}" required/><br/>
+        <label for="password"> Password:</label><input type="text" name="password"value="${user.password}" required/><br/>
+        <label for="adresse">Adresse:</label><input type="text" name="adresse" value="${user.adresse}" required/><br/>
 
         <c:choose>
             <c:when test = "${user.role.idRole == 4}">

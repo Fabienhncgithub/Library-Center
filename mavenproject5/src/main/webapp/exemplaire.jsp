@@ -10,14 +10,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>selection location</title>
 
-        <%
-            Enumeration keys = session.getAttributeNames();
-            while (keys.hasMoreElements()) {
-                String key = (String) keys.nextElement();
-                out.println(key + ": " + session.getValue(key) + "<br>");
-            }
-        %>
 
 
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -50,50 +44,53 @@
                 <jsp:include page="menu-client.jsp"/>
             </c:when>
         </c:choose>
-    </head>
-    <body>
-        <form action="MyServletExemplaire.do" method="post">  
-            <div class="conteneur">
-                         <table class="table table-striped">
-                    <c:if test="${not empty errorMessage}">
-                        <c:out value="${errorMessage}"/>
-                    </c:if>
+
+    <h1>Choisir le format du livre & la date de location</h1>
+</head>
+<body>
+    <form action="MyServletExemplaire.do" method="post">  
+        <div class="conteneur">
+            <table class="table table-striped">
+                <c:if test="${not empty errorMessage}">
+                    <c:out value="${errorMessage}"/>
+                </c:if>
+                <tr>
+                    <th>TITRE</th>
+                    <th>TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+                <form action="MyServletExemplaire.do" method="post">      
                     <tr>
-                        <th>TITRE</th>
-                        <th>TYPE</th>
-                        <th>ACTION</th>
+                        <td>${listeExemplaire.get(0).livre.titre}</td>
+
+                        <td >
+                            <select name="idExemplaireSelected">
+                                <c:forEach  var="exemplaire" items="${listeExemplaire}">
+                                    <option value="${exemplaire.idExemplaire}">${exemplaire.type}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
+
+                        <td>
+                            <input type="hidden" name="idExemplaireSelected" value="${exemplaire.idExemplaire}"/>
+                            <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="dateLocation" type="Submit"> Reserve 
+                        </td>
+
                     </tr>
-                    <form action="MyServletExemplaire.do" method="post">      
-                        <tr>
-                             <td>${listeExemplaire.get(0).livre.titre}</td>
-
-                            <td >
-                                <select name="idExemplaireSelected">
-                                    <c:forEach  var="exemplaire" items="${listeExemplaire}">
-                                        <option value="${exemplaire.idExemplaire}">${exemplaire.type}</option>
-                                    </c:forEach>
-                                </select>
-                            </td>
-
-                            <td>
-                                <input type="hidden" name="idExemplaireSelected" value="${exemplaire.idExemplaire}"/>
-                                <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="dateLocation" type="Submit"> Reserve 
-                            </td>
-
-                        </tr>
 
 
-                </table>
-                <div>
-                    <input type="text" class="form-control" name="datepicker" id="date" placeholder="Date" required=""/>
-                </div>
-        </form>
+            </table>
+            <div>
+                <input type="text" class="form-control" name="datepicker" id="date" placeholder="Date" required=""/>
+            </div>
+            <c:if test="${not empty errorMessage}">
+                <c:out value="${errorMessage}"/>
+            </c:if>
+    </form>
 
-    </div>
+</div>
 </form>
-<c:if test="${not empty errorMessage}">
-    <c:out value="${errorMessage}"/>
-</c:if>
+
 </body>
 
 </html>

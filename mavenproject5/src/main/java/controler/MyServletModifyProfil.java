@@ -28,6 +28,8 @@ public class MyServletModifyProfil extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+
 
         User usr = (User) request.getSession().getAttribute("user");
         User user = new User();

@@ -23,11 +23,11 @@
         <!-- <form method="post" action="UploadServlet.do" enctype="multipart/form-data" class="dropzone">
         </form>--> 
         <form action="MyServletAddBook.do" method="post">
-            <label for="titre">  Titre: </label><input type="text" name="titre"/><br/>
-            <label for="auteur"> Auteur:</label><input type="text" name="auteur"/><br/>
-            <label for="editeur">  Editeur: </label><input type="text" name="editeur"/><br/>
-            <label for="page"> Page Total:</label><input type="number" name="page"/><br/>
-            <label for="prix">Prix d'achat: </label><input type="text" name="prix"/><br/>
+            <label for="titre">  Titre: </label><input type="text" name="titre" required/><br/>
+            <label for="auteur"> Auteur:</label><input type="text" name="auteur" required/><br/>
+            <label for="editeur">  Editeur: </label><input type="text" name="editeur" required/><br/>
+            <label for="page"> Page Total:</label><input type="number" name="page" required/><br/>
+            <label for="prix">Prix d'achat: </label><input type="text" name="prix" required/><br/>
             <select name="type" >
                 <option value="livre">livre</option>
                 <option value="ebook">ebook</option>

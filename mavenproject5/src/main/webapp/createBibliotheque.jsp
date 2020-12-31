@@ -15,8 +15,8 @@
     <form action="MyServletManageBibliotheque.do" method="post">
           <p>Manager manager</p>
         
-        <label for="nom">  Nom: </label><input type="text" name="nom"/><br/>
-        <label for="adresse">Adresse:</label><input type="text" name="adresse"/><br/>
+        <label for="nom">  Nom: </label><input type="text" name="nom" required/><br/>
+        <label for="adresse">Adresse:</label><input type="text" name="adresse" required/><br/>
         
         <p>Manager Bibliotheque</p>
         
