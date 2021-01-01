@@ -18,7 +18,7 @@ public class MyServletManageManager extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Role> listRole = facade.getUser().getAllRole();
+        List<Role> listRole = facade.getCentre().getAllRole();
         request.setAttribute("listRole", listRole);
         request.getRequestDispatcher("createManager.jsp").forward(request, response);
 
@@ -35,10 +35,22 @@ public class MyServletManageManager extends HttpServlet {
         user.setPassword(request.getParameter("password"));
         user.setAdresse(request.getParameter("adresse"));
         int idRole = Integer.parseInt(request.getParameter("role"));
-        user.setRole(facade.getUser().getRoleById(idRole));
-    
+        user.setRole(facade.getCentre().getRoleById(idRole));
 
-        facade.getUser().addManager(user);
+        boolean result = facade.getUser().addManager(user);
+
+        String errorMessage;
+        if (result) {
+            errorMessage = "Utilisateur enregistrée";
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher("/createManager.jsp").forward(request, response);
+        } else {
+            errorMessage = "Cet utilisateur existe déjà";
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher("/createManager.jsp").forward(request, response);
+
+        }
+
     }
 
 }
