@@ -13,6 +13,56 @@ html, body {
     height: 100%;
 }
 
+
+/* ******************* MENU ******************* */
+#menu {
+    display: flex;
+    justify-content: space-between;
+    background-color: #000000;
+    padding: 13px 30px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+#menu .left,
+#menu .right {
+    display: flex;
+    align-items: center;
+}
+
+#menu a{
+    color: #ffffff;
+    padding: 7px 13px;
+    border-radius: .2rem;
+    text-decoration: none;
+    transition: all .2s ease-in-out;
+}
+
+#menu img {
+    height: 30px;
+    margin-right: 13px;
+    object-fit: contain;
+    object-position: center;
+}
+
+#menu a:hover {
+    background-color: lightyellow;
+    color: black;
+}
+
+#menu .left a   { margin-right: 13px; }
+#menu .right a  { margin-left: 13px; }
+
+#menu .right #signout {
+    background-color: red;
+}
+
+#menu .right #signout:hover {
+    background-color: #CD5C5C;
+}
+
+
+
 /* ******************* INDEX ******************* */
 #index {
     display: flex;
@@ -54,65 +104,6 @@ html, body {
 
 #index .login form .actions input {
     min-width: 100px;
-}
-
-
-
-
-
-*{
-    margin: 0px;
-    padding: 0px;
-    font-family: Avenir, sans-serif;
-}
-
-nav{
-    width: 100%;
-    margin: 0px auto 40px auto;
-    background-color: black;
-    position: sticky;
-    top: 0px;
-}
-
-nav ul{
-    list-style-type: none;
-    display: flex;
-}
-
-nav li{
-    padding-left: 7px;
-    padding-right: 7px;
-    font-size: 13px;
-    text-align: center;/*Centre le texte dans les éléments de menu*/
-}
-
-/*Evite que le menu n'ait une hauteur nulle*/
-nav ul::after{
-    content: "";
-    display: table;
-    clear: both;
-}
-
-nav a{
-    display: block; /*Toute la surface sera cliquable*/
-    text-decoration: none;
-    color: white;
-    border-bottom: 2px solid transparent;/*Evite le décalage des éléments sous le menu à cause de la bordure en :hover*/
-    padding: 10px 0px;/*Agrandit le menu et espace la bordure du texte*/
-}
-
-nav a:hover{
-    color: gray;
-    border-bottom: 2px solid gray;
-}
-
-nav h1{
-    display: block; /*Toute la surface sera cliquable*/
-    text-decoration: none;
-    color: white;
-    border-bottom: 2px solid transparent;/*Evite le décalage des éléments sous le menu à cause de la bordure en :hover*/
-    padding: 10px 0px;/*Agrandit le menu et espace la bordure du texte*/
-    text-align: center;
 }
 
 

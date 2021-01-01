@@ -5,6 +5,9 @@
             MyServletLogin.do
         </welcome-file>
     </welcome-file-list>
+    <listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>MyServletLogin</servlet-name>
         <servlet-class>controler.MyServletLogin</servlet-class>
@@ -113,6 +116,11 @@
         <servlet-name>MyServletAddLivre</servlet-name>
         <servlet-class>controler.MyServletAddLivre</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MyServletLogin</servlet-name>
         <url-pattern>/MyServletLogin.do</url-pattern>
@@ -220,6 +228,10 @@
     <servlet-mapping>
         <servlet-name>MyServletAddLivre</servlet-name>
         <url-pattern>/MyServletAddLivre.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WebService</servlet-name>
+        <url-pattern>/WebService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
