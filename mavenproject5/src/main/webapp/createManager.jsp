@@ -11,26 +11,31 @@
         <jsp:include page="menu-admin.jsp"/>
     </head>
     <body>
-      
-         <div class="login">
-        <form action="MyServletManageManager.do" method="post">
 
-             <div class="input">
-            <p>Manager Bibliotheque</p>
-              <div class="input"><label for="nom">  Nom: </label><input type="text" name="nom" required/></div>
-             <div class="input"> <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/></div>
-             <div class="input"> <label for="email">  Email:</label><input type="text" name="email" required/></div>
-             <div class="input"> <label for="password"> Password:</label><input type="password" name="password" required/></div>
-             <div class="input"> <label for="adresse">Adresse:</label><input type="text" name="adresse" required/></div>
-                 </div>
-            <select name="role">
-                <c:forEach items="${listRole}" var="role">
-                    <option value="${role.idRole}">${role.nomRole}</option>
-                </c:forEach>
-            </select>
-            
-            <input type="submit" value=" create "/>
-        </form>
-                 </div>
+        <div class="login">
+            <form action="MyServletManageManager.do" method="post">
+
+                <div class="input">
+                    <p>Manager Bibliotheque</p>
+                    <div class="input"><label for="nom">  Nom: </label><input type="text" name="nom" required/></div>
+                    <div class="input"> <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/></div>
+                    <div class="input"> <label for="email">  Email:</label><input type="text" name="email" required/></div>
+                    <div class="input"> <label for="password"> Password:</label><input type="password" name="password" required/></div>
+                    <div class="input"> <label for="adresse">Adresse:</label><input type="text" name="adresse" required/></div>
+                </div>
+                <select name="role">
+                    <c:forEach items="${listRole}" var="role">
+                        <option value="${role.idRole}">${role.nomRole}</option>
+                    </c:forEach>
+                </select>
+
+                <input type="submit" value=" create "/>
+            </form>
+        </div>
+
+
+        <c:if test="${not empty errorMessage}">
+            <c:out value="${errorMessage}"/>
+        </c:if>
     </body>
 </html>

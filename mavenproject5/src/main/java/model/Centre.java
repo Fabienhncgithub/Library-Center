@@ -7,7 +7,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import model.dao.AbstractDaoFactory;
+import model.dao.BibliothequeDao;
+import model.dao.UserDao;
 
 public class Centre {
 
@@ -24,7 +26,54 @@ public class Centre {
         this.listeDeBiliotheque = listeDeBiliotheque;
     }
 
+    public List<Role> getAllRole() {
+             AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        UserDao userDao = factory.createUserDao();
+        return userDao.getAllRole();
+    }
 
+    public List<User> getAllManager() {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliDao = factory.createBibliothequeDao();
+        return bibliDao.getAllManager();
+    }
+
+    public boolean createBibliotheque(Bibliotheque bibliotheque, int idUser) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliDAO = factory.createBibliothequeDao();
+       return bibliDAO.createBibliotheque(bibliotheque, idUser);
+    }
+
+    public Role getRoleById(int idRole) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        UserDao userDao = factory.createUserDao();
+        return userDao.getRoleByid(idRole);
+    }
+
+    public Exemplaire getExemplaireById(int idExemplaire) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        return bibliothequeDao.getExemplaireById(idExemplaire);
+    }
+
+    public Boolean verifyDispoLocationInsertEbook(Location location, Bibliotheque bibliotheque) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        return bibliothequeDao.verifyDispoLocation(location, bibliotheque);
+    }
+
+        public boolean verifyDispoLocationInsertLivre(Location location, Bibliotheque bibliotheque) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        return bibliothequeDao.verifyDispoLocationLivre(location, bibliotheque);
+    }
+        
+        
+            public List<Bibliotheque> getAllBibliotheque() {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliDao = factory.createBibliothequeDao();
+        listeDeBiliotheque = bibliDao.getAllBibliotheque();
+        return listeDeBiliotheque;
+    }
+    
 }
-
-

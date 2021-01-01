@@ -27,7 +27,8 @@ public class MyServletRendreLocation extends HttpServlet {
         int idLocationRendu = Integer.parseInt(request.getParameter("idLocationRendu"));
         Location location = facade.getLivre().getLocationById(idLocationRendu);
 
-        facade.getLivre().rendreLocation(location, user);
+        
+        facade.getBiblitoheque().rendreLocation(location, user);
         response.sendRedirect(request.getContextPath() + "/MyServletHistorique.do");
 
         //  request.setAttribute("location", location);

@@ -28,14 +28,12 @@ import model.User;
  */
 public class MyServletExemplaire extends HttpServlet {
 
-    /*TODO  vérifier si l'on peut mettre des facades dans une servlet comme ici*/
     Facade facade = new Facade();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        //Bibliotheque bibliotheque = (Bibliotheque) session.getAttribute("bibliotheque");
         List<Exemplaire> listeExemplaire = (ArrayList<Exemplaire>) request.getServletContext().getAttribute("listeExemplaire");
 
         request.setAttribute("listeExemplaire", listeExemplaire);
@@ -59,11 +57,12 @@ public class MyServletExemplaire extends HttpServlet {
             location.setIdUser(user.getIdUser());
             int idExemplaire = Integer.parseInt(request.getParameter("idExemplaireSelected"));
 
-            location.setExemplaire(facade.getBiblitoheque().getExemplaireById(idExemplaire));
+            location.setExemplaire(facade.getCentre().getExemplaireById(idExemplaire));
             location.setDateLocation(da);
 
             if (location.getExemplaire().getType().equals("ebook")) {
-                if (facade.getBiblitoheque().verifyDispoLocationInsertEbook(location, bibliotheque)) {
+
+                if (facade.getCentre().verifyDispoLocationInsertEbook(location, bibliotheque)) {
                     errorMessage = "Vous avez loué le ebook";
                     request.setAttribute("errorMessage", errorMessage);
                     this.getServletContext().getRequestDispatcher("/exemplaire.jsp").forward(request, response);
@@ -73,7 +72,8 @@ public class MyServletExemplaire extends HttpServlet {
                     this.getServletContext().getRequestDispatcher("/exemplaire.jsp").forward(request, response);
                 }
             } else if (location.getExemplaire().getType().equals("livre")) {
-                if (facade.getBiblitoheque().verifyDispoLocationInsertLivre(location, bibliotheque)) {
+
+                if (facade.getCentre().verifyDispoLocationInsertLivre(location, bibliotheque)) {
                     errorMessage = "Vous avez loué le livre";
                     request.setAttribute("errorMessage", errorMessage);
                     this.getServletContext().getRequestDispatcher("/exemplaire.jsp").forward(request, response);

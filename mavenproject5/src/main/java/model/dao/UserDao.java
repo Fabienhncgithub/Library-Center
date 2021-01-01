@@ -26,13 +26,7 @@ public interface UserDao {
 
     public boolean getStatutCotisation(User user, Bibliotheque bibliotheque);
 
-    public void validationCotisation(User user, Bibliotheque bibliotheque);
-
-    public List<User> getAllManager();
-
-    public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque);
-
-    public void addManager(User user);
+    public boolean addManager(User user);
 
     public void insertAvis(Livre livre, User user, String avis, double note);
 
@@ -43,5 +37,8 @@ public interface UserDao {
     public boolean updateProfil(User user);
 
       public void payerAmende(User user);
+
+    public void insertQuestion(String question, User user);
+
 
 }

@@ -7,6 +7,7 @@ package model;
 
 import java.util.List;
 import model.dao.AbstractDaoFactory;
+import model.dao.BibliothequeDao;
 import model.dao.UserDao;
 
 /**
@@ -23,6 +24,7 @@ public class User {
     private Role role;
     private String adresse;
     private float amende;
+
 
     public User(int idUser, String nom, String prenom, String email, String password, Role role, String adresse, float amende) {
         this.idUser = idUser;
@@ -120,16 +122,19 @@ public class User {
         this.adresse = adresse;
     }
 
+
+    
+
     public User authentification(User user, Bibliotheque bibliotheque) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         UserDao userDao = factory.createUserDao();
         return userDao.authentification(user, bibliotheque);
     }
 
-    public boolean signIn(User user, Bibliotheque bibliotheque) {
+    public boolean signIn(Bibliotheque bibliotheque) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         UserDao userDao = factory.createUserDao();
-        return userDao.signIn(user, bibliotheque);
+        return userDao.signIn(this, bibliotheque);
     }
 
     public boolean getStatutCotisation(User user, Bibliotheque bibliotheque) {
@@ -139,28 +144,15 @@ public class User {
 
     }
 
-    public void validationCotisation(User user, Bibliotheque bibliotheque) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        UserDao userDao = factory.createUserDao();
-        userDao.validationCotisation(user, bibliotheque);
-    }
 
-    public List<User> getAllManager() {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        UserDao userDao = factory.createUserDao();
-        return userDao.getAllManager();
-    }
 
-    public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        UserDao userDao = factory.createUserDao();
-        userDao.addBook(exemplaire, bibliotheque);
-    }
 
-    public void addManager(User user) {
+ 
+
+    public boolean addManager(User user) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         UserDao userDao = factory.createUserDao();
-        userDao.addManager(user);
+        return userDao.addManager(user);
     }
 
     public void insertAvis(Livre livre, User user, String avis, double note) {
@@ -175,11 +167,6 @@ public class User {
         return userDao.getAllRole();
     }
 
-    public Role getRoleById(int idRole) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        UserDao userDao = factory.createUserDao();
-        return userDao.getRoleByid(idRole);
-    }
 
     public Boolean updateProfil(User user) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
@@ -191,6 +178,13 @@ public class User {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         UserDao userDao = factory.createUserDao();
         userDao.payerAmende(this);
+    }
+    
+    
+        public void insertQuestion(String question, User user) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+            UserDao userDao = factory.createUserDao();
+            userDao.insertQuestion(question, user);
     }
 
 }

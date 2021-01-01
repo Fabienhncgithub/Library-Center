@@ -203,46 +203,7 @@ public class MySqlLivreDao implements LivreDao {
         return location;
     }
 
-    @Override
-    public void rendreLocation(Location location, User user) {
-        int amende = 0;
-        Connection c = null;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-         float jourRetard;
-        c = MySqlDaoFactory.getInstance().getConnection();
 
-        String sql1 = "UPDATE exemplaire SET rendu = true  WHERE IdExemplaire = ?";
-        String sql2 = "SELECT DATEDIFF(CURRENT_DATE, dateLocation ) as jourRetard from location where location.idUser = ? and location.idLocation = ?";
-        String sql3 = "UPDATE user SET amende = user.amende + ?  WHERE user.idUser = ? ";
-
-        try {
-            c = MySqlDaoFactory.getInstance().getConnection();
-            ps = c.prepareStatement(sql1);
-            ps.setInt(1, location.getExemplaire().getIdExemplaire());
-            ps.executeUpdate();
-
-            ps = c.prepareStatement(sql2);
-            ps.setInt(1, user.getIdUser());
-            ps.setInt(2, location.getIdLocation());
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                jourRetard = rs.getInt("jourRetard") - 30.0f;
-                if ((jourRetard) > 0) {
-                    jourRetard = jourRetard * 0.1f;
-                    ps = c.prepareStatement(sql3);
-                    ps.setFloat(1, jourRetard);
-                    ps.setInt(2, user.getIdUser());
-                    ps.executeUpdate();
-                }
-            }
-        } catch (SQLException sqle) {
-            System.err.println("MySqlLivreDAO, method getLocationById(Location location, User user): \n" + sqle.getMessage());
-        } finally {
-            MySqlDaoFactory.closeAll(rs, ps, c);
-        }
-    }
 
     @Override
     public Livre getLivreById(int idLivre) {

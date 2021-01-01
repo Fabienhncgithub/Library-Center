@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 import model.dao.AbstractDaoFactory;
 import model.dao.BibliothequeDao;
+import model.dao.LivreDao;
 
-/**
- *
- * @author Fabien
- */
+
+/*UPDTAE BIBLIO*/
+
+
+
 public class Bibliotheque {
 
     private int idBibliotheque;
@@ -83,12 +85,7 @@ public class Bibliotheque {
         this.listeDeBiliotheque = listeDeBiliotheque;
     }
 
-    public List<Bibliotheque> getAllBibliotheque() {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliDao = factory.createBibliothequeDao();
-        listeDeBiliotheque = bibliDao.getAllBibliotheque();
-        return listeDeBiliotheque;
-    }
+
 
     public Bibliotheque getBibliothequeById(int idBibliotheque) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
@@ -114,11 +111,7 @@ public class Bibliotheque {
         return bibliDAO.exemplaireByType(idLivre);
     }
 
-    public void createBibliotheque(Bibliotheque bibliotheque, int idUser) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliDAO = factory.createBibliothequeDao();
-        bibliDAO.createBibliotheque(bibliotheque, idUser);
-    }
+
 
     public List<Livre> getAllLivreByBibliotheque(Bibliotheque bibliotheque) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
@@ -132,11 +125,7 @@ public class Bibliotheque {
         return bibliothequeDao.getAllExemplaireByTypeByBibliotheque(idLivre, bibliotheque);
     }
 
-    public void insertQuestion(String question, User user) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
-        bibliothequeDao.insertQuestion(question, user);
-    }
+
 
     public List<Date> getDateLocation(int idExemplaireSelected) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
@@ -150,23 +139,10 @@ public class Bibliotheque {
         bibliothequeDao.location(loc);
     }
 
-    public Boolean verifyDispoLocationInsertEbook(Location location, Bibliotheque bibliotheque) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
-        return bibliothequeDao.verifyDispoLocation(location, bibliotheque);
-    }
 
-    public Exemplaire getExemplaireById(int idExemplaire) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
-        return bibliothequeDao.getExemplaireById(idExemplaire);
-    }
 
-    public boolean verifyDispoLocationInsertLivre(Location location, Bibliotheque bibliotheque) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
-        return bibliothequeDao.verifyDispoLocationLivre(location, bibliotheque);
-    }
+
+
 
     public List<Faq> listeQuestionByUser(User user, Bibliotheque bibliotheque) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
@@ -234,5 +210,26 @@ public class Bibliotheque {
         return bibliothequeDao.searchBook(search);
     }
 
+    public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque) {
+           AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+         bibliothequeDao.addBook(exemplaire,bibliotheque);
+    }
+    
+    
+    
+    public void validationCotisation(User user, Bibliotheque bibliotheque) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+       BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        bibliothequeDao.validationCotisation(user, bibliotheque);
+    }
+    
+    
+        public void rendreLocation(Location location, User user) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+         BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+         bibliothequeDao.rendreLocation(location, user);
+    }
+ 
 
 }

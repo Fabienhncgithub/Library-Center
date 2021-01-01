@@ -37,7 +37,6 @@ public class MyServletAddBook extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /* TODO Supprimer le type? rajouter un exemplaier si il existe pas sinon livre*/
         request.getRequestDispatcher("addBook.jsp").forward(request, response);
 
     }
@@ -117,7 +116,7 @@ public class MyServletAddBook extends HttpServlet {
 //                facade.getUser().addBook(exemplaireLivre, bibliotheque);
 //                System.out.println(exemplaireLivre);
 //            } else {
-                facade.getUser().addBook(exemplaireEbook, bibliotheque);
+                facade.getBiblitoheque().addBook(exemplaireEbook, bibliotheque);
                 System.out.println(exemplaireEbook);
             
 

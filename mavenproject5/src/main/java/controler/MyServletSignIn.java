@@ -43,7 +43,10 @@ public class MyServletSignIn extends HttpServlet {
         user.setPassword(request.getParameter("password"));
         user.setAdresse(request.getParameter("adresse"));
 
-        boolean result = facade.getUser().signIn(user, bibliotheque);
+        
+        
+        
+        boolean result = user.signIn(bibliotheque);
 
         String errorMessage;
         if (result) {

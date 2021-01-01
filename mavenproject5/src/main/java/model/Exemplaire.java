@@ -5,9 +5,6 @@
  */
 package model;
 
-import java.sql.Date;
-
-/*TODO vérifier les attributs boolean disponible & rendu*/
 public class Exemplaire {
 
     private int idExemplaire;

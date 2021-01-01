@@ -38,8 +38,8 @@ public class MyServletLogin extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Bibliotheque bibliotheque = new Bibliotheque();
-        List<Bibliotheque> listeDeBibliotheque = bibliotheque.getAllBibliotheque();
+        
+        List<Bibliotheque> listeDeBibliotheque = facade.getCentre().getAllBibliotheque();
         
         request.getSession().setAttribute("listeDeBibliotheque", listeDeBibliotheque);
         request.getRequestDispatcher("index.jsp").forward(request, response);

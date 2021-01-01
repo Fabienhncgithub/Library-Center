@@ -48,8 +48,7 @@ public class MyServletAddLivre extends HttpServlet {
         exemplaire.setType("livre");
         exemplaire.setLivre(livre);
         
-        
-        facade.getUser().addBook(exemplaire, bibliotheque);
+        facade.getBiblitoheque().addBook(exemplaire, bibliotheque);
 
     }
 }

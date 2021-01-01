@@ -27,7 +27,6 @@ public interface LivreDao {
 
     public Location getLocationById(int idLocationRendu);
 
-    public void rendreLocation(Location location, User user);
 
     public Livre getLivreById(int idLivreAvis);
 

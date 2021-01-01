@@ -23,8 +23,6 @@ public class MyServletManageBibliotheque extends HttpServlet {
 
     Facade facade = new Facade();
 
-
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,11 +37,24 @@ public class MyServletManageBibliotheque extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            int idUser = Integer.parseInt(request.getParameter("manager"));
-            Bibliotheque bibliotheque = new Bibliotheque();
-            bibliotheque.setNom(request.getParameter("nom"));
-            bibliotheque.setAdresse(request.getParameter("adresse"));
-            facade.getBiblitoheque().createBibliotheque(bibliotheque, idUser);
-    }
+        int idUser = Integer.parseInt(request.getParameter("manager"));
+        Bibliotheque bibliotheque = new Bibliotheque();
+        bibliotheque.setNom(request.getParameter("nom"));
+        bibliotheque.setAdresse(request.getParameter("adresse"));
 
+        boolean result = facade.getCentre().createBibliotheque(bibliotheque, idUser);
+
+        String errorMessage;
+        if (result) {
+            errorMessage = "bibliothèque enregistrée";
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher("/createBibliotheque.jsp").forward(request, response);
+        } else {
+            errorMessage = "Cette bibliothèque existe déjà";
+            request.setAttribute("errorMessage", errorMessage);
+            this.getServletContext().getRequestDispatcher("/createBibliotheque.jsp").forward(request, response);
+
+        }
+
+    }
 }

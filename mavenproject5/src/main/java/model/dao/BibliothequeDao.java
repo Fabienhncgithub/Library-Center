@@ -34,13 +34,12 @@ public interface BibliothequeDao {
 
     public List<Exemplaire> exemplaireByType(int idLivre);
 
-    public void createBibliotheque(Bibliotheque bibliotheque, int idUser);
+    public boolean createBibliotheque(Bibliotheque bibliotheque, int idUser);
 
     public List<Livre> getAllLivreByBibliotheque(Bibliotheque bibliotheque);
 
     public List<Exemplaire> getAllExemplaireByTypeByBibliotheque(int idLivre,Bibliotheque bibliotheque);
 
-    public void insertQuestion(String question,User user);
 
     public List<Date> getDateLocation(int idExemplaireSelected);
 
@@ -75,7 +74,15 @@ public interface BibliothequeDao {
 
     public void supprimerLocation(Location location);
 
+    public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque);
 
+    public List<User> getAllManager();
+
+    public void validationCotisation(User user, Bibliotheque bibliotheque);
+
+
+
+    public void rendreLocation(Location location, User user);
 
 
 

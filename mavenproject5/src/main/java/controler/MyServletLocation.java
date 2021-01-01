@@ -34,9 +34,7 @@ public class MyServletLocation extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    //    HttpSession user = request.getSession();
-      //  request.setAttribute("user", user);
-//request.getServletContext().setAttribute("user", user);
+   
         Livre livre = new Livre();
 
         List<Livre> listeDeLivre = livre.getAllLivre();
@@ -54,9 +52,8 @@ public class MyServletLocation extends HttpServlet {
 
         String idL = request.getParameter("louer");
         int idLivre = Integer.parseInt(idL);
-        Bibliotheque bibliotheque = new Bibliotheque();
 
-        bibliotheque.location(idLivre, idUser);
+        facade.getBiblitoheque().location(idLivre, idUser);
     }
 
 }

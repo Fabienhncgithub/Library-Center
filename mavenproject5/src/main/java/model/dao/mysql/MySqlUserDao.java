@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Bibliotheque;
-import model.Client;
-import model.Exemplaire;
 import model.Livre;
 import model.dao.UserDao;
 import model.User;
@@ -170,137 +168,38 @@ public class MySqlUserDao implements UserDao {
     }
 
     @Override
-    public void validationCotisation(User user, Bibliotheque bibliotheque) {
-        Connection c = null;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        String sql = "UPDATE  inscription SET cotisation = ? ,dateCotisation = CURRENT_DATE \n"
-                + "where idUser = ? and idBibliotheque=?  ";
-        try {
-            c = MySqlDaoFactory.getInstance().getConnection();
-            ps = c.prepareStatement(sql);
-            ps.setInt(1, 1);
-            ps.setInt(2, user.getIdUser());
-            ps.setInt(3, bibliotheque.getIdBibliotheque());
-            ps.executeUpdate();
-        } catch (SQLException sqle) {
-            System.err.println("MySqlUserDAO, method addNewUser(String login, String password): \n" + sqle.getMessage());
-        } finally {
-            MySqlDaoFactory.closeAll(rs, ps, c);
-        }
-
-    }
-
-    @Override
-    public List<User> getAllManager() {
-        List<User> listManager = new ArrayList<>();
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        Connection c = MySqlDaoFactory.getInstance().getConnection();
-        String sql = "SELECT idUser, nom, prenom, email, password, role, adresse, amende FROM user where role = ?  ";
-        try {
-            ps = c.prepareStatement(sql);
-            ps.setInt(1, 3);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-                        new Role(rs.getInt(6), rs.getString(7)),
-                        rs.getString(8));
-                listManager.add(user);
-            }
-        } catch (SQLException sqle) {
-            System.err.println("MySqlAnnuaireDAO, method getUsersList(): \n" + sqle.getMessage());
-        } finally {
-            MySqlDaoFactory.closeAll(rs, ps, c);
-        }
-        return listManager;
-
-    }
-
-    @Override
-    public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque) {
-        Connection c = null;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        c = MySqlDaoFactory.getInstance().getConnection();
-
-        String sql = "SELECT livre.titre, livre.idLivre FROM livre where livre.titre = ?";
-        String sql1 = "INSERT INTO livre(prixAchat, titre, auteur, editeur,  page)  VALUES (?, ?, ?, ?, ?)";
-        String sql2 = "INSERT INTO exemplaire(idLivre, type, path) VALUES (?,?,?)";
-        String sql3 = "INSERT INTO `livrebiliotheque`(`idBibliotheque`, `idExemplaire`) VALUES (?,?)";
-
-        try {
-            c = MySqlDaoFactory.getInstance().getConnection();
-            ps = c.prepareStatement(sql);
-            ps.setString(1, exemplaire.getLivre().getTitre());
-            rs = ps.executeQuery();
-
-            if (!rs.next()) {
-                ps = c.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, exemplaire.getLivre().getPrixAchat());
-                ps.setString(2, exemplaire.getLivre().getTitre());
-                ps.setString(3, exemplaire.getLivre().getAuteur());
-                ps.setString(4, exemplaire.getLivre().getEditeur());
-                ps.setInt(5, exemplaire.getLivre().getPage());
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                rs.next();
-                ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, rs.getInt(1));
-                ps.setString(2, exemplaire.getType());
-                ps.setString(3, exemplaire.getPath());
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                rs.next();
-                ps = c.prepareStatement(sql3);
-                ps.setInt(1, bibliotheque.getIdBibliotheque());
-                ps.setInt(2, rs.getInt(1));
-                ps.executeUpdate();
-            } else {
-                ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, rs.getInt("idLivre"));
-                ps.setString(2, exemplaire.getType());
-                ps.setString(3, exemplaire.getPath());
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                //rs.next();
-                ps = c.prepareStatement(sql3);
-                ps.setInt(1, bibliotheque.getIdBibliotheque());
-                ps.setInt(2, rs.getInt(1));
-                ps.executeUpdate();
-            }
-        } catch (SQLException sqle) {
-            System.err.println("MySqlUserDao, method addBook(Livre livre, int idBibliotheque): \n" + sqle.getMessage());
-        } finally {
-            MySqlDaoFactory.closeAll(rs, ps, c);
-        }
-
-    }
-
-    @Override
-    public void addManager(User user
-    ) {
+    public boolean addManager(User user) {
         Connection c;
         ResultSet rs = null;
         PreparedStatement ps = null;
         c = MySqlDaoFactory.getInstance().getConnection();
-        int role = 3;
+        boolean result = false;
 
-        String sql = "INSERT INTO `user` (`nom`, `prenom`, `email`, `password`, `role`, `adresse`) VALUES (?, ?, ?, ?, ?, ?);";
+        String sql = "SELECT user.email FROM `user` WHERE user.email = ?";
+        String sql1 = "INSERT INTO `user` (`nom`, `prenom`, `email`, `password`, `role`, `adresse`) VALUES (?, ?, ?, ?, ?, ?);";
+
         try {
+
             ps = c.prepareStatement(sql);
-            ps.setString(1, user.getNom());
-            ps.setString(2, user.getPrenom());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
-            ps.setInt(5, user.getRole().getIdRole());
-            ps.setString(6, user.getAdresse());
-            ps.executeUpdate();
+            ps.setString(1, user.getEmail());
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                result = true;
+                ps = c.prepareStatement(sql1);
+                ps.setString(1, user.getNom());
+                ps.setString(2, user.getPrenom());
+                ps.setString(3, user.getEmail());
+                ps.setString(4, user.getPassword());
+                ps.setInt(5, user.getRole().getIdRole());
+                ps.setString(6, user.getAdresse());
+                ps.executeUpdate();
+            }
         } catch (SQLException sqle) {
             System.err.println("MySqlUserDAO, method addManager(User user): \n" + sqle.getMessage());
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
+        return result;
     }
 
     @Override
@@ -332,32 +231,6 @@ public class MySqlUserDao implements UserDao {
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
-    }
-
-    @Override
-    public List<Role> getAllRole() {
-        Connection c = null;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        Role role = null;
-        List<Role> listRole = new ArrayList();
-        c = MySqlDaoFactory.getInstance().getConnection();
-        try {
-
-            String sql = "SELECT role.idRole, role.nomRole FROM role";
-
-            ps = c.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                role = new Role(rs.getInt("idRole"), rs.getString("nomRole"));
-                listRole.add(role);
-            }
-        } catch (SQLException sqle) {
-            System.out.println("MySqlUserDAO, method List<Role> getAllRole() : \n" + sqle.getMessage());
-        } finally {
-            MySqlDaoFactory.closeAll(rs, ps, c);
-        }
-        return listRole;
     }
 
     @Override
@@ -445,4 +318,51 @@ public class MySqlUserDao implements UserDao {
         }
     }
 
+    @Override
+    public void insertQuestion(String question, User user) {
+        Connection c = null;
+        Statement st = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+        String sql = "INSERT INTO faq(idUserQuestion, question) VALUES (?,?)";
+
+        try {
+            c = MySqlDaoFactory.getInstance().getConnection();
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, user.getIdUser());
+            ps.setString(2, question);
+            ps.executeUpdate();
+        } catch (SQLException sqle) {
+            System.err.println("MySqlUserDAO, method addNewUser(String name,String role, String password): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+    }
+
+    @Override
+    public List<Role> getAllRole() {
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Role role = null;
+        List<Role> listRole = new ArrayList();
+        c = MySqlDaoFactory.getInstance().getConnection();
+        try {
+
+            String sql = "SELECT role.idRole, role.nomRole FROM role";
+
+            ps = c.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                role = new Role(rs.getInt("idRole"), rs.getString("nomRole"));
+                listRole.add(role);
+            }
+        } catch (SQLException sqle) {
+            System.out.println("MySqlUserDAO, method List<Role> getAllRole() : \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+        return listRole;
+    }
 }

@@ -120,7 +120,7 @@ public class Livre {
     }
 
 
-    /*TODO BOUGER LE GETLLLIVRE*/
+
     public List<Livre> getAllLivre() {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         LivreDao livreDao = factory.createLivreDao();
@@ -128,12 +128,7 @@ public class Livre {
         return listeDeLivre;
     }
 
-    /*TODO BOUGER LE GETLLLIVREBIBLIO*/
-//    public List<Livre> getAllLivreByBibliotheque(int idBibliotheque) {
-//        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-//        LivreDao livreDao = factory.createLivreDao();
-//        return livreDao.getAllLivreByBibliotheque(idBibliotheque);
-//    }
+
     public List<Livre> getAllLocation(Bibliotheque bibliotheque, User user) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         LivreDao livreDao = factory.createLivreDao();
@@ -170,11 +165,7 @@ public class Livre {
         return livreDao.getLocationById(idLocationRendu);
     }
 
-    public void rendreLocation(Location location, User user) {
-        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        LivreDao livreDao = factory.createLivreDao();
-         livreDao.rendreLocation(location, user);
-    }
+
 
 
 

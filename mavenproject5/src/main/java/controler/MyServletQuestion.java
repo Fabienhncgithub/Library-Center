@@ -28,7 +28,14 @@ public class MyServletQuestion extends HttpServlet {
             throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("user");
         String question = request.getParameter("question");
-        facade.getBiblitoheque().insertQuestion(question,user);
+        
+        
+        facade.getUser().insertQuestion(question,user);
+        
+        
+        
+        
+        
            response.sendRedirect(request.getContextPath() + "/MyServletQuestion");
         
     }

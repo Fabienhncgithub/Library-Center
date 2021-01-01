@@ -13,23 +13,26 @@
 </head>
 <body>
     <form action="MyServletManageBibliotheque.do" method="post">
-          <p>Manager manager</p>
-        
+        <p>Manager manager</p>
+
         <label for="nom">  Nom: </label><input type="text" name="nom" required/><br/>
         <label for="adresse">Adresse:</label><input type="text" name="adresse" required/><br/>
-        
+
         <p>Manager Bibliotheque</p>
-        
-            <select name="manager" >
-                <p>${empty listeDeManager}</p>
-                <c:forEach items="${listeDeManager}" var="manager">
-                    <option value="${manager.idUser}">${manager.nom}</option>
-                </c:forEach>
-            </select>
+
+        <select name="manager" >
+            <p>${empty listeDeManager}</p>
+            <c:forEach items="${listeDeManager}" var="manager">
+                <option value="${manager.idUser}">${manager.nom}</option>
+            </c:forEach>
+        </select>
         <input type="submit" value="create"/>
-        
+
         <a href="MyServletManageManager.do">create Manager</a> 
-        
+
     </form>
+    <c:if test="${not empty errorMessage}">
+        <c:out value="${errorMessage}"/>
+    </c:if>
 </body>
 </html>

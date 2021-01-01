@@ -49,7 +49,9 @@ public class MyServletCotisation extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
         Bibliotheque bibliotheque = (Bibliotheque) request.getSession().getAttribute("bibliotheque");
-        facade.getUser().validationCotisation(user, bibliotheque);
+     
+        facade.getBiblitoheque().validationCotisation(user, bibliotheque);
+       
         response.sendRedirect(request.getContextPath() + "/MyServletCotisation.do");
 
     }

@@ -51,7 +51,6 @@ public class MyServletLivre extends HttpServlet {
         int idLivreSelected = Integer.parseInt(request.getParameter("idLivreSelected"));
         request.getSession().setAttribute("idLivreSelected", idLivreSelected);
 
-        /* TODO corriger l'exemplaire dans toute les bibliotheques? */
         List<Exemplaire> listeExemplaire = facade.getBiblitoheque().getAllExemplaireByTypeByBibliotheque(idLivreSelected, bibliotheque);
 
         request.getSession().setAttribute("listeExemplaire", listeExemplaire);
