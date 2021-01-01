@@ -155,26 +155,35 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
     }
 
     @Override
-    public void createBibliotheque(Bibliotheque bibliotheque, int idUser) {
+    public boolean createBibliotheque(Bibliotheque bibliotheque, int idUser) {
         Connection c = null;
         Statement st = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
+        boolean result = false;
         c = MySqlDaoFactory.getInstance().getConnection();
-        String sql = "INSERT INTO bibliotheque(nom, adresse,idManager) VALUES (?,?,?)";
+
+        String sql = "SELECT bibliotheque.idBibliotheque FROM bibliotheque WHERE bibliotheque.nom = ?";
+        String sql1 = "INSERT INTO bibliotheque(nom, adresse,idManager) VALUES (?,?,?)";
 
         try {
-            c = MySqlDaoFactory.getInstance().getConnection();
             ps = c.prepareStatement(sql);
             ps.setString(1, bibliotheque.getNom());
-            ps.setString(2, bibliotheque.getAdresse());
-            ps.setInt(3, idUser);
-            ps.executeUpdate();
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                result = true;
+                ps = c.prepareStatement(sql1);
+                ps.setString(1, bibliotheque.getNom());
+                ps.setString(2, bibliotheque.getAdresse());
+                ps.setInt(3, idUser);
+                ps.executeUpdate();
+            }
         } catch (SQLException sqle) {
             System.err.println("MySqlUserDAO, method addNewUser(String name,String role, String password): \n" + sqle.getMessage());
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
+        return result;
     }
 
     @Override
@@ -195,6 +204,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                 Livre livre = new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("editeur"), rs.getInt("page"), rs.getDouble("noteTotal"));
                 listForm.add(livre);
             }
+
         } catch (SQLException sqle) {
             System.err.println("MySqlLivreDAO, method getLivreList(): \n" + sqle.getMessage());
         } finally {
@@ -235,28 +245,6 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
         return listForm;
-    }
-
-    @Override
-    public void insertQuestion(String question, User user) {
-        Connection c = null;
-        Statement st = null;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        c = MySqlDaoFactory.getInstance().getConnection();
-        String sql = "INSERT INTO faq(idUserQuestion, question) VALUES (?,?)";
-
-        try {
-            c = MySqlDaoFactory.getInstance().getConnection();
-            ps = c.prepareStatement(sql);
-            ps.setInt(1, user.getIdUser());
-            ps.setString(2, question);
-            ps.executeUpdate();
-        } catch (SQLException sqle) {
-            System.err.println("MySqlUserDAO, method addNewUser(String name,String role, String password): \n" + sqle.getMessage());
-        } finally {
-            MySqlDaoFactory.closeAll(rs, ps, c);
-        }
     }
 
     @Override
@@ -334,8 +322,6 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                 ps.setDate(3, new java.sql.Date(location.getDateLocation().getTime()));
                 ps.executeUpdate();
                 result = true;
-                // exemplaire = new Exemplaire(rs.getInt(1), rs.getString(2),
-                //         new Livre(rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8), rs.getDouble(9)));
             } else {
                 result = false;
             }
@@ -516,13 +502,13 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
 
         try {
             ps = c.prepareStatement(sql);
-            ps.setString(1,   "%" + searchLivre+ "%" );
+            ps.setString(1, "%" + searchLivre + "%");
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                  String titre = rs.getString(1);
+                String titre = rs.getString(1);
                 Integer cpt = rs.getInt(2);
-                  searchResult.put(titre, cpt);
+                searchResult.put(titre, cpt);
             }
         } catch (SQLException sqle) {
             System.err.println("MySqlCentreDAO, method searchBook(String searchLivre) : \n" + sqle.getMessage());
@@ -530,7 +516,6 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
         return searchResult;
-
 
     }
 
@@ -731,6 +716,155 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
 
+        }
+    }
+
+    @Override
+    public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque) {
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+
+        String sql = "SELECT livre.titre, livre.idLivre FROM livre where livre.titre = ?";
+        String sql1 = "INSERT INTO livre(prixAchat, titre, auteur, editeur,  page)  VALUES (?, ?, ?, ?, ?)";
+        String sql2 = "INSERT INTO exemplaire(idLivre, type, path) VALUES (?,?,?)";
+        String sql3 = "INSERT INTO `livrebiliotheque`(`idBibliotheque`, `idExemplaire`) VALUES (?,?)";
+
+        try {
+            c = MySqlDaoFactory.getInstance().getConnection();
+            ps = c.prepareStatement(sql);
+            ps.setString(1, exemplaire.getLivre().getTitre());
+            rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                ps = c.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, exemplaire.getLivre().getPrixAchat());
+                ps.setString(2, exemplaire.getLivre().getTitre());
+                ps.setString(3, exemplaire.getLivre().getAuteur());
+                ps.setString(4, exemplaire.getLivre().getEditeur());
+                ps.setInt(5, exemplaire.getLivre().getPage());
+                ps.executeUpdate();
+                rs = ps.getGeneratedKeys();
+                rs.next();
+                ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, rs.getInt(1));
+                ps.setString(2, exemplaire.getType());
+                ps.setString(3, exemplaire.getPath());
+                ps.executeUpdate();
+                rs = ps.getGeneratedKeys();
+                rs.next();
+                ps = c.prepareStatement(sql3);
+                ps.setInt(1, bibliotheque.getIdBibliotheque());
+                ps.setInt(2, rs.getInt(1));
+                ps.executeUpdate();
+            } else {
+                ps = c.prepareStatement(sql2, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, rs.getInt("idLivre"));
+                ps.setString(2, exemplaire.getType());
+                ps.setString(3, exemplaire.getPath());
+                ps.executeUpdate();
+                rs = ps.getGeneratedKeys();
+                //rs.next();
+                ps = c.prepareStatement(sql3);
+                ps.setInt(1, bibliotheque.getIdBibliotheque());
+                ps.setInt(2, rs.getInt(1));
+                ps.executeUpdate();
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlUserDao, method addBook(Livre livre, int idBibliotheque): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+
+    }
+
+    @Override
+    public List<User> getAllManager() {
+        List<User> listManager = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection c = MySqlDaoFactory.getInstance().getConnection();
+        String sql = "SELECT idUser, nom, prenom, email, password, role, adresse, amende FROM user where role = ?  ";
+        try {
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, 3);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+                        new Role(rs.getInt(6), rs.getString(7)),
+                        rs.getString(8));
+                listManager.add(user);
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlAnnuaireDAO, method getUsersList(): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+        return listManager;
+
+    }
+
+    @Override
+    public void validationCotisation(User user, Bibliotheque bibliotheque) {
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        String sql = "UPDATE  inscription SET cotisation = ? ,dateCotisation = CURRENT_DATE \n"
+                + "where idUser = ? and idBibliotheque=?  ";
+        try {
+            c = MySqlDaoFactory.getInstance().getConnection();
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, 1);
+            ps.setInt(2, user.getIdUser());
+            ps.setInt(3, bibliotheque.getIdBibliotheque());
+            ps.executeUpdate();
+        } catch (SQLException sqle) {
+            System.err.println("MySqlUserDAO, method addNewUser(String login, String password): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+
+    }
+
+    @Override
+    public void rendreLocation(Location location, User user) {
+        int amende = 0;
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        float jourRetard;
+        c = MySqlDaoFactory.getInstance().getConnection();
+
+        String sql1 = "UPDATE exemplaire SET rendu = true  WHERE IdExemplaire = ?";
+        String sql2 = "SELECT DATEDIFF(CURRENT_DATE, dateLocation ) as jourRetard from location where location.idUser = ? and location.idLocation = ?";
+        String sql3 = "UPDATE user SET amende = user.amende + ?  WHERE user.idUser = ? ";
+
+        try {
+            c = MySqlDaoFactory.getInstance().getConnection();
+            ps = c.prepareStatement(sql1);
+            ps.setInt(1, location.getExemplaire().getIdExemplaire());
+            ps.executeUpdate();
+
+            ps = c.prepareStatement(sql2);
+            ps.setInt(1, user.getIdUser());
+            ps.setInt(2, location.getIdLocation());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                jourRetard = rs.getInt("jourRetard") - 30.0f;
+                if ((jourRetard) > 0) {
+                    jourRetard = jourRetard * 0.1f;
+                    ps = c.prepareStatement(sql3);
+                    ps.setFloat(1, jourRetard);
+                    ps.setInt(2, user.getIdUser());
+                    ps.executeUpdate();
+                }
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlLivreDAO, method getLocationById(Location location, User user): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
         }
     }
 
