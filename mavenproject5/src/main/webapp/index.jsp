@@ -6,13 +6,13 @@
 <!DOCTYPE html>
 <html>
     <header>
-          <title>Login</title>
-           
+        <title>Login</title>
+
     </header>
     <body id="index">
         <nav>
             <h1>Bienvenue dans l'application bibliothèque</h1>
-        
+
         </nav>  
 
         <!<!-- IMAGE -->
@@ -52,7 +52,7 @@
 
                 <!<!-- ACTIONS -->
                 <div class="actions">
-                    <a href="SignIn.jsp" class="btn btn-outline-primary">Sign in</a>
+                    <a href="SignIn.jsp" class="btn btn-outline-primary">Sign up</a>
                     <input type="submit" value="login" class="btn btn-outline-primary"/>
                 </div>
 

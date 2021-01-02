@@ -829,7 +829,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
 
     @Override
     public void rendreLocation(Location location, User user) {
-        int amende = 0;
+       
         Connection c = null;
         ResultSet rs = null;
         PreparedStatement ps = null;

@@ -62,7 +62,7 @@
                 <input type="file" value="file"/>
             </div>
 
-            <input type="submit"  id="subtt" value=" Ajouter "/>
+            <input type="submit"  id="subtt" value=" Ajouter " class="btn btn-primary btn-sm"/>
         </form>
     </body> 
 

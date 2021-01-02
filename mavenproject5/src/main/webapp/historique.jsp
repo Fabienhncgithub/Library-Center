@@ -42,17 +42,17 @@
                             </form>
                         <form action="MyServletHistorique.do" method="post">  
                             <td> 
-                                <input type="submit" value=" Avis & noter ">
+                                <input type="submit" value=" Avis & noter " class="btn btn-primary btn-sm">
                                 <input type="hidden" name="titreLivreAvis" value="${location.exemplaire.livre.titre}"/>
                             </td>
                         </form>
 
 
                         <c:choose>
-                            <c:when  test="${location.exemplaire.type == 'livre' && location.exemplaire.rendu == 'false'}">
+                            <c:when  test="${location.exemplaire.type == 'livre' && location.exemplaire.rendu == false}">
                                 <form action="MyServletRendreLocation.do" method="post">  
                                     <td> 
-                                        <input type="submit" value=" Rendre Livre ">
+                                        <input type="submit" value=" Rendre Livre " class="btn btn-primary btn-sm">
                                         <input type="hidden" name="idLocationRendu" value="${location.idLocation}"/>
                                     </td>
                                 </form>

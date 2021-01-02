@@ -23,7 +23,7 @@ public class MyServletSearch extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String search = request.getParameter("search");
-       Map<String, Integer>searchResult = facade.getBiblitoheque().searchBook(search);
+       Map<String, Integer>searchResult = facade.getCentre().searchBook(search);
         request.setAttribute("searchResult", searchResult);
         request.getRequestDispatcher("resultatRecherche.jsp").forward(request, response);
     }

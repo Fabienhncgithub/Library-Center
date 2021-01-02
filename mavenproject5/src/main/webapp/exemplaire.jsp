@@ -51,9 +51,7 @@
     <form action="MyServletExemplaire.do" method="post">  
         <div class="conteneur">
             <table class="table table-striped">
-                <c:if test="${not empty errorMessage}">
-                    <c:out value="${errorMessage}"/>
-                </c:if>
+          
                 <tr>
                     <th>TITRE</th>
                     <th>TYPE</th>
@@ -73,7 +71,7 @@
 
                         <td>
                             <input type="hidden" name="idExemplaireSelected" value="${exemplaire.idExemplaire}"/>
-                            <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="dateLocation" type="Submit"> Reserve 
+                            <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="dateLocation" type="Submit"  class="btn btn-primary btn-sm"> Reserve 
                         </td>
 
                     </tr>

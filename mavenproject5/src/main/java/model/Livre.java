@@ -23,9 +23,6 @@ public class Livre {
     private int page;
     private int prixAchat;
     private Double noteTotal;
-    private List<Avis> listAvis = new ArrayList();
-
-    private List<Livre> listeDeLivre = new ArrayList<>();
 
     public Livre(int idLivre, String titre, String auteur, String editeur, int page, int prixAchat, Double noteTotal) {
         this.idLivre = idLivre;
@@ -61,14 +58,6 @@ public class Livre {
 
     public void setIdLivre(int idLivre) {
         this.idLivre = idLivre;
-    }
-
-    public List<Livre> getListeDeLivre() {
-        return listeDeLivre;
-    }
-
-    public void setListeDeLivre(List<Livre> listeDeLivre) {
-        this.listeDeLivre = listeDeLivre;
     }
 
     public String getTitre() {
@@ -119,15 +108,12 @@ public class Livre {
         this.noteTotal = noteTotal;
     }
 
-
-
     public List<Livre> getAllLivre() {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         LivreDao livreDao = factory.createLivreDao();
-        listeDeLivre = livreDao.getAllLivre();
-        return listeDeLivre;
-    }
+        return livreDao.getAllLivre();
 
+    }
 
     public List<Livre> getAllLocation(Bibliotheque bibliotheque, User user) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
@@ -164,9 +150,5 @@ public class Livre {
         LivreDao livreDao = factory.createLivreDao();
         return livreDao.getLocationById(idLocationRendu);
     }
-
-
-
-
 
 }

@@ -6,7 +6,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.dao.AbstractDaoFactory;
 import model.dao.BibliothequeDao;
 import model.dao.UserDao;
@@ -27,7 +29,7 @@ public class Centre {
     }
 
     public List<Role> getAllRole() {
-             AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         UserDao userDao = factory.createUserDao();
         return userDao.getAllRole();
     }
@@ -41,7 +43,7 @@ public class Centre {
     public boolean createBibliotheque(Bibliotheque bibliotheque, int idUser) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         BibliothequeDao bibliDAO = factory.createBibliothequeDao();
-       return bibliDAO.createBibliotheque(bibliotheque, idUser);
+        return bibliDAO.createBibliotheque(bibliotheque, idUser);
     }
 
     public Role getRoleById(int idRole) {
@@ -62,18 +64,34 @@ public class Centre {
         return bibliothequeDao.verifyDispoLocation(location, bibliotheque);
     }
 
-        public boolean verifyDispoLocationInsertLivre(Location location, Bibliotheque bibliotheque) {
+    public boolean verifyDispoLocationInsertLivre(Location location, Bibliotheque bibliotheque) {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
         return bibliothequeDao.verifyDispoLocationLivre(location, bibliotheque);
     }
-        
-        
-            public List<Bibliotheque> getAllBibliotheque() {
+
+    public List<Bibliotheque> getAllBibliotheque() {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         BibliothequeDao bibliDao = factory.createBibliothequeDao();
         listeDeBiliotheque = bibliDao.getAllBibliotheque();
         return listeDeBiliotheque;
     }
-    
+
+    public Map<String, Integer> searchBook(String search) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        return bibliothequeDao.searchBook(search);
+    }
+
+    public Map<String, String> convertionString(String res) {
+        res = res.substring(1, res.length() - 1);
+        String[] keyValuePairs = res.split(",");
+        Map<String, String> mapTitreLivre = new HashMap<>();
+
+        for (String p : keyValuePairs) {
+            String[] entry = p.split("=");
+            mapTitreLivre.put(entry[0].trim(), entry[1].trim());
+        }
+        return mapTitreLivre;
+    }
 }

@@ -20,6 +20,7 @@ import model.Facade;
 import model.dao.AbstractDaoFactory;
 import model.dao.mysql.MySqlDaoFactory;
 import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class MyServletLogin extends HttpServlet {
 
@@ -38,9 +39,8 @@ public class MyServletLogin extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        
         List<Bibliotheque> listeDeBibliotheque = facade.getCentre().getAllBibliotheque();
-        
+
         request.getSession().setAttribute("listeDeBibliotheque", listeDeBibliotheque);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
@@ -51,6 +51,7 @@ public class MyServletLogin extends HttpServlet {
 
         String email = request.getParameter("email").trim();
         String password = request.getParameter("password").trim();
+
         String errorMessage;
         if (email.isEmpty() && password.isEmpty()) {
             errorMessage = "Please enter username and password";
@@ -67,20 +68,27 @@ public class MyServletLogin extends HttpServlet {
         } else {
             User user = new User();
             user.setEmail(email);
-            user.setPassword(password);
+            //  user.setPassword(password);
             int idBibliotheque = Integer.parseInt(request.getParameter("bibliotheque"));
             Bibliotheque bibliotheque = facade.getBiblitoheque().getBibliothequeById(idBibliotheque);
             user = facade.getUser().authentification(user, bibliotheque);
 
-            if (user != null) {
-                request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("bibliotheque", bibliotheque);
-         
-                response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
-            } else {
+            if (user == null) {
                 errorMessage = "This user is not register in this biliotheque";
                 request.setAttribute("errorMessage", errorMessage);
                 this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+
+            } else {
+                if (!BCrypt.checkpw(password, user.getPassword())) {
+                    errorMessage = "Your password is not correct";
+                    request.setAttribute("errorMessage", errorMessage);
+                    this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+
+                } else {
+                    request.getSession().setAttribute("user", user);
+                    request.getSession().setAttribute("bibliotheque", bibliotheque);
+                    response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
+                }
             }
         }
     }

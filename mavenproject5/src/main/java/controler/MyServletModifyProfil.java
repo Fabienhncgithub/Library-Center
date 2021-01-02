@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Facade;
 import model.Role;
 import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class MyServletModifyProfil extends HttpServlet {
 
@@ -37,7 +38,9 @@ public class MyServletModifyProfil extends HttpServlet {
         user.setNom(request.getParameter("nom"));
         user.setPrenom(request.getParameter("prenom"));
         user.setEmail(request.getParameter("email"));
-        user.setPassword(request.getParameter("password"));
+        String pass = request.getParameter("password");
+        String hashpass = BCrypt.hashpw(pass, BCrypt.gensalt());
+        user.setPassword(hashpass);
         user.setAdresse(request.getParameter("adresse"));
         boolean result = facade.getUser().updateProfil(user);
 

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Facade;
 import model.Role;
 import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class MyServletManageManager extends HttpServlet {
 
@@ -32,11 +33,11 @@ public class MyServletManageManager extends HttpServlet {
         user.setNom(request.getParameter("nom"));
         user.setPrenom(request.getParameter("prenom"));
         user.setEmail(request.getParameter("email"));
-        user.setPassword(request.getParameter("password"));
+        String haspassword = BCrypt.hashpw(request.getParameter("password"),BCrypt.gensalt());
+        user.setPassword(haspassword);
         user.setAdresse(request.getParameter("adresse"));
         int idRole = Integer.parseInt(request.getParameter("role"));
         user.setRole(facade.getCentre().getRoleById(idRole));
-
         boolean result = facade.getUser().addManager(user);
 
         String errorMessage;

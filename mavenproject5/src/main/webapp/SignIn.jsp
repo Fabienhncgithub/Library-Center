@@ -14,25 +14,36 @@
             <h1>Inscrivez vous!</h1>
         </nav>  
 
-        <form action="MyServletSignIn.do" method="post">
-
-            <label for="nom">  Nom: </label><input type="text" name="nom" required/><br/>
-            <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/><br/>
-            <label for="email">  Email:</label><input type="text" name="email" required/><br/>
-            <label for="password"> Password:</label><input type="password" name="password" required/><br/>
-            <label for="adresse">Adresse:</label><input type="text" name="adresse" required/><br/>
 
 
-            <b>Bibliotheque:</b>
-            <select name="bibliotheque" >
-                <p>${empty listeDeBibliotheque}</p>
-                <c:forEach items="${listeDeBibliotheque}" var="bibliotheque">
-                    <option value="${bibliotheque.idBibliotheque}">${bibliotheque.nom}</option>
-                </c:forEach>
-            </select>
-            <input type="submit" value="Sign in"/>
-        </form>
+        <div class="form-group row">
+            <form action="MyServletSignIn.do" method="post">
+                <!<!-- INPUTS -->
+                <label for="nom">  Nom: </label><input type="text" name="nom" required/><br/>
+                <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/><br/>
+                <label for="email">  Email:</label><input type="text" name="email" required/><br/>
+                <label for="password"> Password:</label><input type="password" name="password" required/><br/>
+                <label for="adresse">Adresse:</label><input type="text" name="adresse" required/><br/>
 
+                <div class="input">
+                    <b>Bibliotheque:</b>
+                    <select name="bibliotheque" >
+                        <p>${empty listeDeBibliotheque}</p>
+                        <c:forEach items="${listeDeBibliotheque}" var="bibliotheque">
+                            <option value="${bibliotheque.idBibliotheque}">${bibliotheque.nom}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </form>
+
+        </div>
+        <!<!-- ACTIONS -->
+        <div class="actions">
+            <input type="submit" value="S'inscrire" class="btn btn-outline-primary"/>
+            <a href="index.jsp" class="btn btn-outline-primary">Login</a>
+        </div>
+
+        <!<!-- ERROR MESSAGE --> 
         <c:if test="${not empty errorMessage}">
             <c:out value="${errorMessage}"/>
         </c:if>

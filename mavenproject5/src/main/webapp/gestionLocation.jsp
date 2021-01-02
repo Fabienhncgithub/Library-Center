@@ -47,7 +47,7 @@
                             <c:choose>
                                 <c:when test = "${location.exemplaire.verifier == 'false'}">
                                     <td> 
-                                        <input type="submit" value=" valider ">
+                                        <input type="submit" value=" valider " class="btn btn-primary btn-sm">
                                         <input type="hidden" name="idExemplaireValider" value="${location.exemplaire.idExemplaire}"/>
 
                                     </td>
@@ -58,7 +58,7 @@
                             <c:choose>
                                 <c:when test = "${location.exemplaire.type == 'livre' && location.exemplaire.verifier == 'false' && location.dateLocation < currentDate}">
                                     <td> 
-                                        <input type="submit" value=" supprimer ">
+                                        <input type="submit" value=" supprimer " class="btn btn-primary btn-sm">
                                         <input type="hidden" name="idExemplaireSupprimer" value="${location.idLocation}"/>
                                     </td>
                                 </c:when>

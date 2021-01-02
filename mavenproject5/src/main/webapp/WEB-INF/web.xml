@@ -117,7 +117,11 @@
         <servlet-class>controler.MyServletAddLivre</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>WebService</servlet-name>
+        <servlet-name>MyServletCentreService</servlet-name>
+        <servlet-class>controler.MyServletCentreService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CentreServiceImplService</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -230,8 +234,12 @@
         <url-pattern>/MyServletAddLivre.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>WebService</servlet-name>
-        <url-pattern>/WebService</url-pattern>
+        <servlet-name>MyServletCentreService</servlet-name>
+        <url-pattern>/MyServletCentreService.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CentreServiceImplService</servlet-name>
+        <url-pattern>/CentreServiceImplService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

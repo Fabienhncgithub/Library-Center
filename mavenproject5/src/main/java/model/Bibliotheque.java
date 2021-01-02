@@ -204,11 +204,7 @@ public class Bibliotheque {
         bibliothequeDao.supprimerLocation(location);
     }
 
-    public Map<String, Integer> searchBook(String search) {
-      AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
-        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
-        return bibliothequeDao.searchBook(search);
-    }
+
 
     public void addBook(Exemplaire exemplaire, Bibliotheque bibliotheque) {
            AbstractDaoFactory factory = AbstractDaoFactory.getFactory();

@@ -18,7 +18,7 @@
                 <jsp:include page="menu-client.jsp"/>
             </c:when>
         </c:choose>
-         <h1>Avis sur le livre  ${livre.titre} </h1>
+         <h1>${nbrAvis} Avis sur le livre  ${livre.titre} </h1>
     </head>
     <body>
         <div class="conteneur">

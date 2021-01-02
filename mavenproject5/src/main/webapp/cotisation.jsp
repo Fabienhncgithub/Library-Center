@@ -7,8 +7,23 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>cotisation</title>
+    <c:choose>
+        <c:when test = "${user.role.idRole == 4}">
+            <jsp:include page="menu-admin.jsp"/>
+        </c:when>
+        <c:when test = "${user.role.idRole == 1}">
+            <jsp:include page="menu-client.jsp"/>
+        </c:when>
+    </c:choose>
+</head>
+        
+        
         <title>cotisation</title>
-        <jsp:include page="menu-client.jsp"/>
+      
     <h1>Payement cotisation</h1>
 </head>
 <body>
@@ -17,8 +32,8 @@
 <c:if test="${not empty paiementCotisation}">
     <c:out value="${paiementCotisation}"/>
     <form action="MyServletCotisation.do" method="post">  
-        <input type="submit" value=" Paiement bancaire"/>
-        <input type="submit" value=" Paiement VISA "/>
+        <input type="submit" value=" Paiement bancaire" class="btn btn-outline-primary"/>
+        <input type="submit" value=" Paiement VISA " class="btn btn-outline-primary"/>
     </form>
 </c:if>
 

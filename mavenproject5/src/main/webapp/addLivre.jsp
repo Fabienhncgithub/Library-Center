@@ -21,7 +21,6 @@
             <label for="prix">Prix d'achat: </label><input type="text" name="prix" required/><br/>
             <div>
              
-         
-            <input type="submit" value=" Ajouter "/>
+            <input type="submit" value=" Ajouter " class="btn btn-primary btn-sm"/>
         </form>
     </body> 

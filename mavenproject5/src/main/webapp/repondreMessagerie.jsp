@@ -28,7 +28,7 @@
     <p>Votre réponse : </p>
     <form action="MyServletRepondreMessagerie.do" method="post">
         <label for="reponse">  réponse : </label><textarea type="text" name="reponse" required></textarea><br/>
-        <input type="submit" value=" repondre "/>
+        <input type="submit" value=" repondre " class="btn btn-primary btn-sm"/>
              <input type="hidden" name="idQuestion" value="${idQuestionSelected}"/>
         
     </form>

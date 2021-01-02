@@ -36,7 +36,7 @@ public class MyServletQuestion extends HttpServlet {
         
         
         
-           response.sendRedirect(request.getContextPath() + "/MyServletQuestion");
+           response.sendRedirect(request.getContextPath() + "/MyServletMessagerie.do");
         
     }
 

@@ -30,7 +30,7 @@
             <td> 
                 <p>!! Vous devez payer une amende de ${user.amende} € pour pouvoir louer un livre !! </p>
                 <form action="MyServletPayerAmende.do" method="post">  
-                    <input type="submit" value=" cliquez sur ce lien pour payer et régulariser votre situation "/>
+                    <input type="submit" value=" cliquez sur ce lien pour payer et régulariser votre situation " class="btn btn-primary btn-sm"/>
                 </form>
             </td>
         </c:when>
@@ -45,7 +45,7 @@
             <c:when test = "${user.role.idRole == 4}">
 
                 Rechercher:  <input type="text" name="search"/><br/><br/>  
-                <input type="submit" value=" search " class="btn btn-unique btn-rounded btn-sm my-0">
+                <input type="submit" value=" search " class="btn btn-primary btn-sm">
                 <input type="hidden" name="search"/>   
             </c:when>
         </c:choose>
@@ -86,7 +86,7 @@
                         <c:choose>
                             <c:when test = "${paiementCoti == false && user.amende == 0}">
                                 <td> 
-                                    <input type="submit" value=" louer " class="btn btn-secondary btn-sm">
+                                    <input type="submit" value=" louer " class="btn btn-primary btn-sm">
                                     <input type="hidden" name="idLivreSelected" value="${livre.idLivre}"/>   
                                 </td>
                             </c:when>

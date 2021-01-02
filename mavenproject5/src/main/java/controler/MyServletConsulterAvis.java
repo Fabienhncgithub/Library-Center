@@ -33,9 +33,9 @@ public class MyServletConsulterAvis extends HttpServlet {
         
       
         List<Avis> listeAvis = facade.getBiblitoheque().getAllAvisbyIdLivre(idLivreSelected);
+        int nbrAvis = listeAvis.size();
         
-        
-        
+  request.setAttribute("nbrAvis", nbrAvis);      
 request.setAttribute("livre", livre);
         request.setAttribute("listeAvis", listeAvis);
         request.getRequestDispatcher("avisLivre.jsp").forward(request, response);

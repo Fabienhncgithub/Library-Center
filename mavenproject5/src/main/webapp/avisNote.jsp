@@ -40,7 +40,7 @@
                 <option value="5">9</option><!-- comment -->
                 <option value="5">10</option>
             </select>
-            <input type="submit" value=" ajouter "/>
+            <input type="submit" value=" ajouter " class="btn btn-primary btn-sm"/>
         </form>
     </body>
 </html>

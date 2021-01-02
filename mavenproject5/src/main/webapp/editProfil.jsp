@@ -15,7 +15,6 @@
             <jsp:include page="menu-client.jsp"/>
         </c:when>
     </c:choose>
-
 </head>
 <body>
     <form action="MyServletModifyProfil.do" method="post">
@@ -23,7 +22,7 @@
         <label for="nom">  Nom: </label><input type="text" name="nom" value="${user.nom}" required/><br/>
         <label for="prenom"> Prenom:</label><input type="text" name="prenom" value="${user.prenom}" required/><br/>
         <label for="email">  Email:</label><input type="text" name="email"value="${user.email}" required/><br/>
-        <label for="password"> Password:</label><input type="text" name="password"value="${user.password}" required/><br/>
+        <label for="password"> Password:</label><input type="password" name="password" required/><br/>
         <label for="adresse">Adresse:</label><input type="text" name="adresse" value="${user.adresse}" required/><br/>
 
         <c:choose>
@@ -36,10 +35,10 @@
             </c:when>
         </c:choose>
 
-        <input type="submit" value=" enregistrer les modifications "/>
+        <input type="submit" value=" enregistrer les modifications " class="btn btn-primary btn-sm"/>
     </form>
-             <c:if test="${not empty errorMessage}">
-            <c:out value="${errorMessage}"/>
-        </c:if>
+    <c:if test="${not empty errorMessage}">
+        <c:out value="${errorMessage}"/>
+    </c:if>
 </body>
 </html>

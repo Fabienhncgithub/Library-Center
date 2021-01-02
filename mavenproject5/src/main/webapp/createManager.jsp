@@ -29,7 +29,7 @@
                     </c:forEach>
                 </select>
 
-                <input type="submit" value=" create "/>
+                <input type="submit" value=" create " class="btn btn-primary btn-sm"/>
             </form>
         </div>
 

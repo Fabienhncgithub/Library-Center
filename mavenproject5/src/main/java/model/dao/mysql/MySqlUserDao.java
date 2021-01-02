@@ -44,12 +44,11 @@ public class MySqlUserDao implements UserDao {
         User result = null;
         c = MySqlDaoFactory.getInstance().getConnection();
 
-        String sql = "SELECT user.idUser,user.nom, user.prenom, user.email, user.password, role.idRole, role.nomRole, user.adresse, user.amende from user join role on role.idRole = user.role join inscription on user.idUser = inscription.idUser where user.email = ? and user.password  = ? and inscription.idBibliotheque = ?";
+        String sql = "SELECT user.idUser,user.nom, user.prenom, user.email, user.password, role.idRole, role.nomRole, user.adresse, user.amende from user join role on role.idRole = user.role join inscription on user.idUser = inscription.idUser where user.email = ?  and inscription.idBibliotheque = ?";
         try {
             ps = c.prepareStatement(sql);
             ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
-            ps.setInt(3, bibliotheque.getIdBibliotheque());
+            ps.setInt(2, bibliotheque.getIdBibliotheque());
             rs = ps.executeQuery();
             if (rs.next()) {
                 result = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
@@ -91,20 +90,19 @@ public class MySqlUserDao implements UserDao {
         PreparedStatement ps = null;
         boolean result = false;
 
-        String sql = "SELECT idUser FROM user where user.email = ?";
+        String sql = "SELECT idUser FROM user WHERE user.email = ?";
 
         String sql1 = "INSERT INTO user(nom, prenom, email, password,  role, adresse)  VALUES (?, ?, ?, ?, ?, ?)";
 
-        String sql2 = "INSERT INTO inscription(idUser, idBibliotheque, cotisation) VALUES (?,?,?)";
+        String sql2 = "INSERT INTO inscription(idUser, idBibliotheque) VALUES (?,?)";
 
         try {
             c = MySqlDaoFactory.getInstance().getConnection();
-            ps = c.prepareStatement(sql1);
+            ps = c.prepareStatement(sql);
             ps.setString(1, user.getEmail());
             rs = ps.executeQuery();
-            if (rs.next()) {
+            if (!rs.next()) {
                 result = true;
-                c = MySqlDaoFactory.getInstance().getConnection();
                 ps = c.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getNom());
                 ps.setString(2, user.getPrenom());
@@ -119,7 +117,6 @@ public class MySqlUserDao implements UserDao {
                 rs.next();
                 ps.setInt(1, rs.getInt(1));
                 ps.setInt(2, bibliotheque.getIdBibliotheque());
-                ps.setInt(3, 0);
                 ps.executeUpdate();
             }
 
