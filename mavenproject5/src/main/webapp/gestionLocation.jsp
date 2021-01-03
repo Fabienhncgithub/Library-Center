@@ -16,13 +16,11 @@
         </c:choose>
     </head>
     <body>
-        
- 
-        
-        
+
+
         <form action="MyServletGestionLocation.do" method="post">  
             <div class="conteneur">
-              <table class="table table-striped">
+                <table class="table table-striped">
                     <tr>
                         <th>TITRE</th>
                         <th>AUTEUR</th>
@@ -31,7 +29,7 @@
                         <th>TYPE</th>
                         <th>DATE  LOCATION</th>
                         <th>NOTE TOTAL</th>
-                        <th>VALIDER</th>
+                        <th>RETOUR</th>
                         <th>SUPPRIMER</th>
                     </tr>
                     <c:forEach items="${listAllLocationBibliotheque}" var="location" >
@@ -45,23 +43,29 @@
                             <td>${location.exemplaire.livre.noteTotal}</td>
                         <form action="MyServletGestionLocation.do" method="post">  
                             <c:choose>
-                                <c:when test = "${location.exemplaire.verifier == 'false'}">
+                                <c:when test = "${location.exemplaire.rendu == true}">
                                     <td> 
                                         <input type="submit" value=" valider " class="btn btn-primary btn-sm">
                                         <input type="hidden" name="idExemplaireValider" value="${location.exemplaire.idExemplaire}"/>
 
                                     </td>
                                 </c:when>
+                                <c:otherwise>
+                                    <td> </td>
+                                </c:otherwise> 
                             </c:choose>
                         </form>
                         <form action="MyServletSupprimerExemplaire.do" method="post"> 
                             <c:choose>
-                                <c:when test = "${location.exemplaire.type == 'livre' && location.exemplaire.verifier == 'false' && location.dateLocation < currentDate}">
+                                <c:when test = "${location.exemplaire.type == 'livre' && location.exemplaire.verifier == false && location.dateLocation < currentDate}">
                                     <td> 
                                         <input type="submit" value=" supprimer " class="btn btn-primary btn-sm">
                                         <input type="hidden" name="idExemplaireSupprimer" value="${location.idLocation}"/>
                                     </td>
                                 </c:when>
+                                <c:otherwise>
+                                    <td> </td>
+                                </c:otherwise> 
                             </c:choose>
                         </form>
                         </tr>
