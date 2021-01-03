@@ -41,6 +41,8 @@ public class Livre {
         this.page = page;
         this.noteTotal = noteTotal;
     }
+    
+   
 
     public Livre(int idLivre, String titre, String editeur, int page) {
         this.idLivre = idLivre;

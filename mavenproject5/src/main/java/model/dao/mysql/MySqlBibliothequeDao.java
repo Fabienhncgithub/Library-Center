@@ -368,12 +368,13 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         Boolean result = false;
         c = MySqlDaoFactory.getInstance().getConnection();
 
-        String sql = "SELECT exemplaire.idExemplaire, exemplaire.type, livre.idLivre, livre.titre, livre.auteur, livre.editeur, livre.page, livre.prixAchat, livre.noteTotal FROM exemplaire JOIN livre ON exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire WHERE exemplaire.idLivre = ? AND exemplaire.type=? AND livrebiliotheque.idBibliotheque = ? AND exemplaire.idExemplaire NOT IN (SELECT location.idExemplaire FROM location WHERE location.dateLocation BETWEEN DATE_SUB(?,INTERVAL 30 DAY) AND DATE_ADD(?,INTERVAL 30 DAY))GROUP BY exemplaire.idExemplaire LIMIT 1";
-        String sql2 = "SELECT exemplaire.idExemplaire, exemplaire.type, livre.idLivre, livre.titre, livre.auteur, livre.editeur, livre.page, livre.prixAchat, livre.noteTotal FROM"
+        String sql = "SELECT exemplaire.idExemplaire, exemplaire.type,exemplaire.disponible ,livre.idLivre, livre.titre, livre.auteur, livre.editeur, livre.page, livre.prixAchat, livre.noteTotal FROM exemplaire JOIN livre ON exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire WHERE exemplaire.idLivre = ? AND exemplaire.type=? AND livrebiliotheque.idBibliotheque = ? AND exemplaire.disponible = true AND exemplaire.idExemplaire NOT IN (SELECT location.idExemplaire FROM location WHERE location.dateLocation BETWEEN DATE_SUB(?,INTERVAL 30 DAY) AND DATE_ADD(?,INTERVAL 30 DAY))GROUP BY exemplaire.idExemplaire LIMIT 1";
+        String sql2 = "SELECT exemplaire.idExemplaire, exemplaire.type, exemplaire.disponible ,livre.idLivre, livre.titre, livre.auteur, livre.editeur, livre.page, livre.prixAchat, livre.noteTotal FROM"
                 + " exemplaire join livre on exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire "
-                + "WHERE exemplaire.idLivre = ? AND exemplaire.type=? "
+                + "WHERE exemplaire.idLivre = ? AND exemplaire.type=? AND exemplaire.disponible = true "
                 + "AND exemplaire.idExemplaire NOT IN (SELECT location.idExemplaire FROM location WHERE location.dateLocation BETWEEN DATE_SUB(?,INTERVAL 32 DAY) AND DATE_ADD(?,INTERVAL 32 DAY))GROUP BY exemplaire.idExemplaire LIMIT 1";
         String sql3 = "INSERT INTO location(idExemplaire, idUser, dateLocation) VALUES (?,?,?)";
+        String sql4 = "UPDATE exemplaire SET rendu = 0 , verifier = 0 WHERE exemplaire.idExemplaire = ? ";
 
         try {
             ps = c.prepareStatement(sql);
@@ -403,6 +404,10 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                     ps.setInt(1, rs.getInt("idExemplaire"));
                     ps.setInt(2, location.getIdUser());
                     ps.setDate(3, new java.sql.Date(location.getDateLocation().getTime()));
+                    ps.executeUpdate();
+                    
+                    ps = c.prepareStatement(sql4);
+                    ps.setInt(1, location.getExemplaire().getIdExemplaire());
                     ps.executeUpdate();
                 }
             }
@@ -707,6 +712,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
             ps.setInt(2, idUser);
             ps.executeUpdate();
 
+            
             ps = c.prepareStatement(sqlSupprimerExemplaire);
             ps.setInt(1, location.getExemplaire().getIdExemplaire());
             ps.executeUpdate();
