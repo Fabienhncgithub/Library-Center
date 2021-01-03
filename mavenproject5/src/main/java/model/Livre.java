@@ -41,8 +41,6 @@ public class Livre {
         this.page = page;
         this.noteTotal = noteTotal;
     }
-    
-   
 
     public Livre(int idLivre, String titre, String editeur, int page) {
         this.idLivre = idLivre;
@@ -151,6 +149,18 @@ public class Livre {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         LivreDao livreDao = factory.createLivreDao();
         return livreDao.getLocationById(idLocationRendu);
+    }
+
+    public List<Avis> getAvisByIdUser(User user) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        LivreDao livreDao = factory.createLivreDao();
+        return livreDao.getAvisByIdUser(user);
+    }
+
+    public boolean getAvisByIdUSerIdLivreSelected(User user, Livre livre) {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        LivreDao livreDao = factory.createLivreDao();
+        return livreDao.getAvisByIdUSerIdLivreSelected(user, livre);
     }
 
 }
