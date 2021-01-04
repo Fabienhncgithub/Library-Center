@@ -13,6 +13,12 @@
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
             </c:when>
+                 <c:when test = "${user.role.idRole == 3}">
+                <jsp:include page="menu-manager.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 1}">
+                <jsp:include page="menu-client.jsp"/>
+            </c:when>
         </c:choose>
     </head>
     <body>
@@ -47,7 +53,6 @@
                                     <td> 
                                         <input type="submit" value=" valider " class="btn btn-primary btn-sm">
                                         <input type="hidden" name="idExemplaireValider" value="${location.exemplaire.idExemplaire}"/>
-
                                     </td>
                                 </c:when>
                                 <c:otherwise>
