@@ -30,5 +30,12 @@ public interface LivreDao {
 
     public Livre getLivreById(int idLivreAvis);
 
+    public List<Avis> getAvisByIdUser(User user);
+
+    public boolean getAvisByIdUSerIdLivreSelected(User user, Livre livre);
+
+
+    public void registerPage(int pageSelect, int idLocation);
+
 
 }

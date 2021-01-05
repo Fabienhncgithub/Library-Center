@@ -55,8 +55,6 @@ public class MyServletSignIn extends HttpServlet {
             request.setAttribute("errorMessage", errorMessage);
             this.getServletContext().getRequestDispatcher("/SignIn.jsp").forward(request, response);
         }
-
-        //     response.sendRedirect(request.getContextPath() + "/MyServletLogin");
     }
 
 }

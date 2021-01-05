@@ -93,7 +93,6 @@ public class MyServletAddBook extends HttpServlet {
                 }
             }
 
-           // Exemplaire exemplaireLivre = new Exemplaire();
             Exemplaire exemplaireEbook = new Exemplaire();
             Livre livre = new Livre();
 
@@ -101,24 +100,14 @@ public class MyServletAddBook extends HttpServlet {
             livre.setAuteur(auteur);
             livre.setEditeur(editeur);
             livre.setPage(Integer.parseInt(page));
-            livre.setPrixAchat(Integer.parseInt(prix));
-
-//            exemplaireLivre.setLivre(livre);
-//            exemplaireLivre.setType(type);
-//            exemplaireLivre.setPath("");
+            livre.setPrixAchat(Float.parseFloat(prix));
 
             exemplaireEbook.setLivre(livre);
             exemplaireEbook.setType(type);
             exemplaireEbook.setPath(path);
 
-            //facade.getUser().addBook(exemplaireEbook, bibliotheque);
-//            if (type.equals("livre")) {
-//                facade.getUser().addBook(exemplaireLivre, bibliotheque);
-//                System.out.println(exemplaireLivre);
-//            } else {
-                facade.getBiblitoheque().addBook(exemplaireEbook, bibliotheque);
-                System.out.println(exemplaireEbook);
-            
+            facade.getBiblitoheque().addBook(exemplaireEbook, bibliotheque);
+            System.out.println(exemplaireEbook);
 
         } catch (FileUploadException e) {
             throw new RuntimeException(e);

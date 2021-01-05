@@ -1,4 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.util.Iterator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,37 +11,40 @@
     <head>
         <title>selection location</title>
 
-
-
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <script>
 
-            var dates = ["20/01/2020", "21/01/2020", "22/01/2020", "23/01/2020"];
-
-            function DisableDates(date) {
-                var string = jQuery.datepicker.formatDate('dd/mm/yy', date);
-                return [dates.indexOf(string) == -1];
-            }
-
+    
+   
             $(function () {
                 $("#date").datepicker({
-                    beforeShowDay: DisableDates
                 });
             });
 
         </script>
+        
+        
+        
+        
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <c:choose>
+        <title>location</title>
+     <c:choose>
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
             </c:when>
-            <c:when test = "${user.role.idRole == 1}">
-                <jsp:include page="menu-client.jsp"/>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
             </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
         </c:choose>
 
     <h1>Choisir le format du livre & la date de location</h1>
@@ -79,7 +81,7 @@
 
             </table>
             <div>
-                <input type="text" class="form-control" name="datepicker" id="date" placeholder="Date" required=""/>
+                <input type="text"  name="datepicker" id="date" placeholder="Introduire date" required=""/>
             </div>
             <c:if test="${not empty errorMessage}">
                 <c:out value="${errorMessage}"/>

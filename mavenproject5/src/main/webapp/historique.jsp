@@ -8,27 +8,44 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <c:choose>
+     <c:choose>
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
             </c:when>
-            <c:when test = "${user.role.idRole == 1}">
-                <jsp:include page="menu-client.jsp"/>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
             </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
         </c:choose>
 
     </head>
     <body>
-
+           <h1>Votre historique de location pour la bibliotheque de ${bibliotheque.nom}</h1>
         <form action="MyServletHistorique.do" method="post">  
             <div class="conteneur">
                 <table class="table table-striped">
+                    <!<!-- ERROR MESSAGE -->  
                     <c:if test="${not empty errorMessage}">
-                        <c:out value="${errorMessage}"/>
+                        <div class="alert alert-danger" role="alert">
+                            <c:out value="${errorMessage}"/> 
+                        </div>
                     </c:if>
-
                     <tr>
-                        <th>TITRE</th><th>AUTEUR</th><th>EDITEUR</th><th>PAGE</th><th>TYPE</th><th>DATE  LOCATION</th><th>NOTE TOTAL</th><th>AVIS & NOTE</th><th>RENDRE LIVRE</th>
+                        <th>TITRE</th>
+                        <th>AUTEUR</th>
+                        <th>EDITEUR</th>
+                        <th>PAGE</th>
+                        <th>TYPE</th>
+                        <th>DATE  LOCATION</th>
+                        <th>PAGE ATTEINTE</th>
+                        <th>NOTE TOTAL</th>
+                        <th>AVIS & NOTE</th>
+                        <th>RENDRE LIVRE</th>
                     </tr>
                     <c:forEach items="${listeLocation}" var="location" >
                         <tr>
@@ -38,18 +55,45 @@
                             <td>${location.exemplaire.livre.page}</td>
                             <td>${location.exemplaire.type}</td>
                             <td>${location.dateLocation}</td>
-                            <td>${location.exemplaire.livre.noteTotal}</td>
-                            </form>
+
+                        <form action="MyServletenregistrerPage.do" method="post">  
+                            <c:choose>
+
+                                <c:when  test = "${location.exemplaire.type == 'ebook' && location.exemplaire.rendu == false && location.dateLocation<=date}">
+                                    <td>
+                                        ${location.pageSelect}
+
+                                        <input type="submit" value="lire" class="btn btn-primary btn-sm">
+                                        <input type="hidden" name="pageSelect" value="${location.idLocation}"/>
+                                        <input type="hidden" name="pageTotal" value="${location.exemplaire.livre.page}"/>
+                                    </td>
+                                </c:when>
+                                <c:when  test = "${location.exemplaire.type == 'ebook' && location.exemplaire.rendu == true}">
+                                    <td>rendu</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>Pas dispo pour livre</td>
+                                </c:otherwise>
+
+                            </c:choose>
+                        </form> 
+                        <c:choose>
+                            <c:when  test = "${location.exemplaire.livre.noteTotal == 0.0}">
+                                <td>pas encore de note</td>
+                            </c:when>
+                            <c:when  test = "${location.exemplaire.livre.noteTotal != null}">
+                                <td>${location.exemplaire.livre.noteTotal}</td>
+                            </c:when>
+                        </c:choose>  
+                        </form>
                         <form action="MyServletHistorique.do" method="post">  
                             <td> 
                                 <input type="submit" value=" Avis & noter " class="btn btn-primary btn-sm">
                                 <input type="hidden" name="titreLivreAvis" value="${location.exemplaire.livre.titre}"/>
                             </td>
                         </form>
-
-
                         <c:choose>
-                            <c:when  test="${location.exemplaire.type == 'livre' && location.exemplaire.rendu == false}">
+                            <c:when  test="${location.exemplaire.type == 'livre' && location.exemplaire.rendu == false && location.dateLocation<=date}">
                                 <form action="MyServletRendreLocation.do" method="post">  
                                     <td> 
                                         <input type="submit" value=" Rendre Livre " class="btn btn-primary btn-sm">
@@ -57,6 +101,11 @@
                                     </td>
                                 </form>
                             </c:when>
+                            <c:otherwise >
+                                <td>
+
+                                </td>
+                            </c:otherwise>
                         </c:choose>
                         <c:if test="${not empty ancienAvis}">
                             <c:out value="${ancienAvis}"/>
@@ -69,6 +118,5 @@
                     </c:forEach>
                 </table>
             </div>
-
     </body>
 </html>

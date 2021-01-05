@@ -7,8 +7,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <jsp:include page="menu-admin.jsp"/>
+        <title>Create manager</title>
+     <c:choose>
+            <c:when test = "${user.role.idRole == 4}">
+                <jsp:include page="menu-admin.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
+        </c:choose>
+            <h1>Create profil</h1>
     </head>
     <body>
 
@@ -16,7 +30,7 @@
             <form action="MyServletManageManager.do" method="post">
 
                 <div class="input">
-                    <p>Manager Bibliotheque</p>
+         
                     <div class="input"><label for="nom">  Nom: </label><input type="text" name="nom" required/></div>
                     <div class="input"> <label for="prenom"> Prenom:</label><input type="text" name="prenom" required/></div>
                     <div class="input"> <label for="email">  Email:</label><input type="text" name="email" required/></div>

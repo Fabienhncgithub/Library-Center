@@ -7,16 +7,11 @@
         <a href='MyServletCotisation.do'><img src="picture/stock-exchange-app.png" alt="logo"/>Cotisation</a>
         <a href='question.jsp'><img src="picture/mail-inbox-app.png" alt="logo"/>Contact</a>
         <a href='MyServletMessagerie.do'><img src="picture/speech-bubble.png" alt="logo"/>Messagerie</a>
-        <a href='MyServletAddLivre.do'><img src="picture/add.png" alt="logo"/>livre</a>
-        <a href='MyServletAddBook.do'><img src="picture/add.png" alt="logo"/>ebook</a>
-
-
-        <a href='MyServletManageManager.do'><img src="picture/add.png" alt="logo"/>profil</a>
-        <a  href='MyServletManageBibliotheque.do'><img src="picture/add.png" alt="logo"/>bibliothèque</a>
-        <a href='MyServletGestionLocation.do'><img src="picture/settings.png" alt="logo"/>Admin</a>
+       /a>
+        <a href='MyServletGestionLocation.do'><img src="picture/settings.png" alt="logo"/>Gestion location</a>
 
         <div class="right">
-            <a href='MyServletModifyProfil.do'><img src="picture/user.png" alt="logo"/>${user.prenom}</a>
+            <a href='MyServletModifyProfil.do'><img src="picture/user.png" alt="logo"/>Profil ${user.prenom}</a>
             <a href='MyServletDisconect.do' id="signout"><img src="picture/exit.png"/>Déconnexion <!-- de la bibliothèque de ${bibliotheque.nom} --></a>
         </div>
 </nav>

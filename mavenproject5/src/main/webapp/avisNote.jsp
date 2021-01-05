@@ -11,14 +11,20 @@
         <title>JSP Page</title>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <c:choose>
+        <title>Avis & note</title>
+     <c:choose>
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
             </c:when>
-            <c:when test = "${user.role.idRole == 1}">
-                <jsp:include page="menu-client.jsp"/>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
             </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
         </c:choose>
     </head>
     <body>
@@ -28,17 +34,16 @@
             <label for="avis">  Avis : </label><textarea type="text" name="avis" required></textarea><br/>
             <b>Note:</b>
             <select name="note" >
-                <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-                <option value="5">6</option>
-                <option value="5">7</option>
-                <option value="5">8</option><!-- comment -->
-                <option value="5">9</option><!-- comment -->
-                <option value="5">10</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option><!-- comment -->
+                <option value="9">9</option><!-- comment -->
+                <option value="10">10</option>
             </select>
             <input type="submit" value=" ajouter " class="btn btn-primary btn-sm"/>
         </form>

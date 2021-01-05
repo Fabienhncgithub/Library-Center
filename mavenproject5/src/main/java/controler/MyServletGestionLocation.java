@@ -1,5 +1,6 @@
 package controler;
 
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.paramValueType;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -27,12 +28,12 @@ public class MyServletGestionLocation extends HttpServlet {
         listAllLocationBibliotheque = facade.getBiblitoheque().getAllLocationByBibliotheque(bibliotheque);
 
         Date currentDate = new Date();
-        
+
         request.setAttribute("user", user);
         request.setAttribute("listAllLocationBibliotheque", listAllLocationBibliotheque);
         request.setAttribute("currentDate", currentDate);
-        
-       request.getRequestDispatcher("gestionLocation.jsp").forward(request, response);
+
+        request.getRequestDispatcher("gestionLocation.jsp").forward(request, response);
         //response.sendRedirect(request.getContextPath() + "/MyServletGestionLocation.do");
     }
 
@@ -41,8 +42,8 @@ public class MyServletGestionLocation extends HttpServlet {
             throws ServletException, IOException {
         int idExemplaireValider = Integer.parseInt(request.getParameter("idExemplaireValider"));
         facade.getBiblitoheque().validationRetour(idExemplaireValider);
-       response.sendRedirect(request.getContextPath() + "/MyServletGestionLocation.do");
-            //     this.getServletContext().getRequestDispatcher("/gestionLocation.jsp").forward(request, response);
+
+        response.sendRedirect("MyServletGestionLocation.do");
     }
 
 }

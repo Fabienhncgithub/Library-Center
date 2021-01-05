@@ -304,9 +304,9 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         Boolean result = false;
         c = MySqlDaoFactory.getInstance().getConnection();
 
-        String sql = "SELECT exemplaire.idExemplaire, exemplaire.type, livre.idLivre, livre.titre, livre.auteur, livre.editeur, livre.page, livre.prixAchat, livre.noteTotal from exemplaire join livre on exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire WHERE exemplaire.idLivre = ? AND exemplaire.type=? AND exemplaire.idExemplaire NOT IN (SELECT location.idExemplaire FROM location WHERE location.dateLocation BETWEEN DATE_SUB(?,INTERVAL 30 DAY) AND DATE_ADD(?,INTERVAL 30 DAY)) GROUP BY exemplaire.idExemplaire ORDER BY livrebiliotheque.idBibliotheque = ? DESC LIMIT 1";
+        String sql = "SELECT exemplaire.idExemplaire, exemplaire.type, livre.idLivre, livre.titre, livre.auteur, livre.editeur, livre.page, livre.prixAchat, livre.noteTotal from exemplaire join livre on exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire WHERE exemplaire.idLivre = ? AND exemplaire.type=? AND exemplaire.disponible = true AND exemplaire.idExemplaire NOT IN (SELECT location.idExemplaire FROM location WHERE location.dateLocation BETWEEN DATE_SUB(?,INTERVAL 30 DAY) AND DATE_ADD(?,INTERVAL 30 DAY)) GROUP BY exemplaire.idExemplaire ORDER BY livrebiliotheque.idBibliotheque = ? DESC LIMIT 1";
         String sql2 = "INSERT INTO location(idExemplaire, idUser, dateLocation) VALUES (?,?,?)";
-
+        String sql3 = "UPDATE exemplaire SET rendu = 0 , verifier = 0 WHERE idExemplaire = ?";
         try {
             ps = c.prepareStatement(sql);
             ps.setInt(1, location.getExemplaire().getLivre().getIdLivre());
@@ -322,6 +322,10 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                 ps.setDate(3, new java.sql.Date(location.getDateLocation().getTime()));
                 ps.executeUpdate();
                 result = true;
+
+                ps = c.prepareStatement(sql3);
+                ps.setInt(1, location.getExemplaire().getIdExemplaire());
+                ps.executeUpdate();
             } else {
                 result = false;
             }
@@ -391,6 +395,11 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                 ps.setInt(2, location.getIdUser());
                 ps.setDate(3, new java.sql.Date(location.getDateLocation().getTime()));
                 ps.executeUpdate();
+
+                ps = c.prepareStatement(sql4);
+                ps.setInt(1, location.getExemplaire().getIdExemplaire());
+                ps.executeUpdate();
+
             } else if (!rs.next()) {
                 ps = c.prepareStatement(sql2);
                 ps.setInt(1, location.getExemplaire().getLivre().getIdLivre());
@@ -405,7 +414,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                     ps.setInt(2, location.getIdUser());
                     ps.setDate(3, new java.sql.Date(location.getDateLocation().getTime()));
                     ps.executeUpdate();
-                    
+
                     ps = c.prepareStatement(sql4);
                     ps.setInt(1, location.getExemplaire().getIdExemplaire());
                     ps.executeUpdate();
@@ -532,7 +541,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         c = MySqlDaoFactory.getInstance().getConnection();
         List<Location> listLocation = new ArrayList<>();
 
-        String sql = "SELECT location.idLocation, location.idExemplaire, location.idUser, location.dateLocation, exemplaire.idLivre, exemplaire.type, exemplaire.disponible,exemplaire.rendu,exemplaire.verifier , livre.idLivre, livre.prixAchat, livre.titre, livre.auteur, livre.editeur, livre.page, livre.noteTotal FROM location JOIN exemplaire ON location.idExemplaire = exemplaire.idExemplaire JOIN livre ON exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire  WHERE idUser = ? AND livrebiliotheque.idBibliotheque  = ?";
+        String sql = "SELECT location.idLocation, location.idExemplaire, location.idUser, location.dateLocation, location.pageSelect,exemplaire.idLivre, exemplaire.type, exemplaire.disponible,exemplaire.rendu,exemplaire.verifier , livre.idLivre, livre.prixAchat, livre.titre, livre.auteur, livre.editeur, livre.page, livre.noteTotal FROM location JOIN exemplaire ON location.idExemplaire = exemplaire.idExemplaire JOIN livre ON exemplaire.idLivre = livre.idLivre JOIN livrebiliotheque ON livrebiliotheque.idExemplaire = exemplaire.idExemplaire  WHERE idUser = ? AND livrebiliotheque.idBibliotheque  = ?";
 
         try {
             ps = c.prepareStatement(sql);
@@ -543,8 +552,8 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
             while (rs.next()) {
                 Location location = new Location(rs.getInt("idLocation"),
                         new Exemplaire(rs.getInt("idExemplaire"), rs.getString("type"),
-                                new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("auteur"), rs.getString("editeur"), rs.getInt("page"), rs.getInt("prixAchat"), rs.getDouble("noteTotal")), rs.getBoolean("disponible"), rs.getBoolean("rendu"), rs.getBoolean("verifier")),
-                        rs.getInt("idUser"), rs.getDate("dateLocation"));
+                                new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("auteur"), rs.getString("editeur"), rs.getInt("page"), rs.getFloat("prixAchat"), rs.getDouble("noteTotal")), rs.getBoolean("disponible"), rs.getBoolean("rendu"), rs.getBoolean("verifier")),
+                        rs.getInt("idUser"), rs.getDate("dateLocation"), rs.getInt("pageSelect"));
                 listLocation.add(location);
             }
         } catch (SQLException sqle) {
@@ -613,7 +622,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         ResultSet rs = null;
         PreparedStatement ps = null;
         Connection c = MySqlDaoFactory.getInstance().getConnection();
-        String sql = "SELECT idUser, nom, prenom, email, `password`, role, adresse, amende FROM user WHERE role = ? NOT IN (SELECT inscription.idUser FROM inscription)";
+       String sql = "SELECT idUser, nom, prenom, email, `password`, role, adresse, amende FROM user WHERE role = ? NOT IN (SELECT inscription.idUser FROM inscription)";
         try {
             ps = c.prepareStatement(sql);
             ps.setInt(1, 3);
@@ -651,7 +660,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
             while (rs.next()) {
                 Location location = new Location(rs.getInt("idLocation"),
                         new Exemplaire(rs.getInt("idExemplaire"), rs.getString("type"),
-                                new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("auteur"), rs.getString("editeur"), rs.getInt("page"), rs.getInt("prixAchat"), rs.getDouble("noteTotal")), rs.getBoolean("disponible"), rs.getBoolean("rendu"), rs.getBoolean("verifier")),
+                                new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("auteur"), rs.getString("editeur"), rs.getInt("page"), rs.getFloat("prixAchat"), rs.getDouble("noteTotal")), rs.getBoolean("disponible"), rs.getBoolean("rendu"), rs.getBoolean("verifier")),
                         rs.getInt("idUser"), rs.getDate("dateLocation"));
                 listLocation.add(location);
             }
@@ -670,7 +679,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         PreparedStatement ps = null;
         c = MySqlDaoFactory.getInstance().getConnection();
 
-        String sql = "UPDATE exemplaire SET verifier = true  WHERE IdExemplaire = ?";
+        String sql = "UPDATE exemplaire SET verifier = true  WHERE idExemplaire = ?";
 
         try {
             ps = c.prepareStatement(sql);
@@ -682,7 +691,6 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
-
     }
 
     @Override
@@ -712,7 +720,6 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
             ps.setInt(2, idUser);
             ps.executeUpdate();
 
-            
             ps = c.prepareStatement(sqlSupprimerExemplaire);
             ps.setInt(1, location.getExemplaire().getIdExemplaire());
             ps.executeUpdate();
@@ -745,7 +752,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
 
             if (!rs.next()) {
                 ps = c.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, exemplaire.getLivre().getPrixAchat());
+                ps.setFloat(1, exemplaire.getLivre().getPrixAchat());
                 ps.setString(2, exemplaire.getLivre().getTitre());
                 ps.setString(3, exemplaire.getLivre().getAuteur());
                 ps.setString(4, exemplaire.getLivre().getEditeur());
@@ -760,6 +767,7 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
+                
                 ps = c.prepareStatement(sql3);
                 ps.setInt(1, bibliotheque.getIdBibliotheque());
                 ps.setInt(2, rs.getInt(1));
@@ -771,7 +779,8 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
                 ps.setString(3, exemplaire.getPath());
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
-                //rs.next();
+                rs.next();
+                
                 ps = c.prepareStatement(sql3);
                 ps.setInt(1, bibliotheque.getIdBibliotheque());
                 ps.setInt(2, rs.getInt(1));
@@ -835,7 +844,6 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
 
     @Override
     public void rendreLocation(Location location, User user) {
-       
         Connection c = null;
         ResultSet rs = null;
         PreparedStatement ps = null;
@@ -872,6 +880,33 @@ public class MySqlBibliothequeDao implements BibliothequeDao {
         } finally {
             MySqlDaoFactory.closeAll(rs, ps, c);
         }
+    }
+
+    @Override
+    public void rendreEbook() {
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sqlCalcul = "SELECT DATEDIFF(CURRENT_DATE, dateLocation ) as duree,exemplaire.idExemplaire FROM location,exemplaire WHERE location.idExemplaire = exemplaire.idExemplaire AND exemplaire.type = 'ebook'";
+        String sql = "UPDATE exemplaire SET rendu=true  WHERE idExemplaire = ? ";
+        try {
+            c = MySqlDaoFactory.getInstance().getConnection();
+            ps = c.prepareStatement(sqlCalcul);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int idExemplaire = rs.getInt("idExemplaire");
+                if (rs.getInt("duree") > 30) {
+                    ps = c.prepareStatement(sql);
+                    ps.setInt(1, idExemplaire);
+                    ps.executeUpdate();
+                }
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlLivreDAO, method getLocationById(Location location, User user): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+
     }
 
 }

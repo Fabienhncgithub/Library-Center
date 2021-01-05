@@ -14,8 +14,6 @@
             <h1>Inscrivez vous!</h1>
         </nav>  
 
-
-
         <div class="form-group row">
             <form action="MyServletSignIn.do" method="post">
                 <!<!-- INPUTS -->
@@ -34,13 +32,14 @@
                         </c:forEach>
                     </select>
                 </div>
-            </form>
+         
 
         </div>
         <!<!-- ACTIONS -->
         <div class="actions">
-            <input type="submit" value="S'inscrire" class="btn btn-outline-primary"/>
-            <a href="index.jsp" class="btn btn-outline-primary">Login</a>
+            <input type="submit" value="S'enregisrter" class="btn btn-outline-primary"/>
+             </form>
+            <a href="index.jsp" class="btn btn-outline-primary">se connecter</a>
         </div>
 
         <!<!-- ERROR MESSAGE --> 

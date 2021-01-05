@@ -32,7 +32,7 @@ public class MyServletRepondreMessagerie extends HttpServlet {
 
         facade.getBiblitoheque().reponseQuestion(user, reponse, idQuestion);
 
-        //   facade.getRequestDispatcher("test.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/MyServletMessagerie.do");
     }
 
 }

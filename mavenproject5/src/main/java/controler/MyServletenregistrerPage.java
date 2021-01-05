@@ -6,12 +6,12 @@
 package controler;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Avis;
+import model.Exemplaire;
 import model.Facade;
 import model.User;
 
@@ -19,46 +19,38 @@ import model.User;
  *
  * @author Fabien
  */
-public class MyServletAvisNote extends HttpServlet {
+public class MyServletenregistrerPage extends HttpServlet {
 
     Facade facade = new Facade();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String titreLivreAvis = (String) request.getSession().getAttribute("titreLivreAvis");
-
-        request.setAttribute("titreLivreAvis", titreLivreAvis);
-        request.getRequestDispatcher("avisNote.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int  idLocation =  Integer.parseInt(request.getParameter("pageSelect"));
+        int nbPage = Integer.parseInt(request.getParameter("pageTotal"));
+        
+        
+        
+        
+        Random random = new Random();
+        int pageSelect = random.nextInt(nbPage - 1) + 1;
+        
 
-        User user = (User) request.getSession().getAttribute("user");
-        String titreLivreAvis = (String) request.getSession().getAttribute("titreLivreAvis");
         
         
-        int idLivre = facade.getLivre().getLivreByNom(titreLivreAvis).getIdLivre();
-
-        
-        Avis avis = new Avis();
-        avis.setUser(user);
-        avis.setIdLivre(idLivre);
-        avis.setCommentaire(request.getParameter("avis"));
-        avis.setNote(Integer.parseInt(request.getParameter("note")));
-        facade.getLivre().insertAvis(avis);
-        
-    
+        facade.getLivre().registerPage(pageSelect, idLocation);
         
         response.sendRedirect(request.getContextPath() + "/MyServletHistorique.do");
         
-            }
-        
-       
         
         
+        
+
     }
 
-
+}

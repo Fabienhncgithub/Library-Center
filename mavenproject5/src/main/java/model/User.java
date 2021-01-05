@@ -187,4 +187,10 @@ public class User {
             userDao.insertQuestion(question, user);
     }
 
+    public boolean addProfil(User user, Bibliotheque bibliotheque) {
+         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        UserDao userDao = factory.createUserDao();
+          return userDao.addProfil(user,bibliotheque);
+    }
+
 }

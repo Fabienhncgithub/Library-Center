@@ -17,6 +17,7 @@ import model.Exemplaire;
 import model.dao.LivreDao;
 import model.Livre;
 import model.Location;
+import model.Role;
 import model.User;
 
 /**
@@ -67,8 +68,6 @@ public class MySqlLivreDao implements LivreDao {
         }
         return listForm;
     }
-
-
 
     @Override
     public List<Livre> getAllLocation(Bibliotheque bibliotheque, User user) {
@@ -126,7 +125,7 @@ public class MySqlLivreDao implements LivreDao {
         ResultSet rs = null;
         PreparedStatement ps = null;
         c = MySqlDaoFactory.getInstance().getConnection();
-        int role = 3;
+      
 
         String sql = "INSERT INTO `avis` (`idLivre`, `idUser`, `commentaire`, `note`) VALUES (?, ?, ?, ?)";
         String sql2 = "UPDATE livre SET livre.noteTotal =(SELECT AVG(avis.note) FROM avis WHERE avis.idLivre = ?) WHERE livre.idLivre = ? ";
@@ -137,6 +136,7 @@ public class MySqlLivreDao implements LivreDao {
             ps.setString(3, avis.getCommentaire());
             ps.setDouble(4, avis.getNote());
             ps.executeUpdate();
+
             ps = c.prepareStatement(sql2);
             ps.setInt(1, avis.getIdLivre());
             ps.setInt(2, avis.getIdLivre());
@@ -192,8 +192,8 @@ public class MySqlLivreDao implements LivreDao {
                 location = new Location(rs.getInt("idLocation"),
                         new Exemplaire(rs.getInt("idExemplaire"), rs.getString("type"),
                                 new Livre(rs.getInt("idLivre"), rs.getString("titre"), rs.getString("auteur"), rs.getString("editeur"), rs.getInt("page"), rs.getInt("prixAchat"), rs.getDouble("noteTotal")),
-                                rs.getBoolean("disponible"),rs.getBoolean("rendu"),rs.getBoolean("verifier"))
-                        ,rs.getInt("idUser"), rs.getDate("dateLocation"));
+                                rs.getBoolean("disponible"), rs.getBoolean("rendu"), rs.getBoolean("verifier")),
+                        rs.getInt("idUser"), rs.getDate("dateLocation"));
             }
         } catch (SQLException sqle) {
             System.err.println("MySqlLivreDAO, method getLocationById(int idLocation): \n" + sqle.getMessage());
@@ -202,8 +202,6 @@ public class MySqlLivreDao implements LivreDao {
         }
         return location;
     }
-
-
 
     @Override
     public Livre getLivreById(int idLivre) {
@@ -227,6 +225,84 @@ public class MySqlLivreDao implements LivreDao {
         }
         return livre;
     }
-    
+
+    @Override
+    public List<Avis> getAvisByIdUser(User user) {
+        List<Avis> listAvis = new ArrayList<>();
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+        String sql = "SELECT avis.idLivre, avis.idUser, avis.commentaire, avis.note, `user`.idUser, `user`.nom, `user`.prenom, `user`.email,`user`.password, role.idRole, role.nomRole, user.adresse, user.amende FROM avis JOIN `user` ON `user`.idUser = avis.idUser JOIN role ON `user`.role = role.idRole WHERE avis.idUser  = ?";
+
+        try {
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, user.getIdUser());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Avis avis = new Avis(rs.getInt(1),
+                        new User(rs.getInt(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                                new Role(rs.getInt(10), rs.getString(11)),
+                                rs.getString(12), rs.getFloat(13)),
+                        rs.getString(3), rs.getInt(4));
+                listAvis.add(avis);
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlLivreDAO, method getLivreById(int idLivre): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+        return listAvis;
+
+    }
+
+    @Override
+    public boolean getAvisByIdUSerIdLivreSelected(User user, Livre livre) {
+        boolean result = false;
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+        String sql = "SELECT idLivre, idUser FROM avis WHERE idUser = ? AND idLivre = ?";
+
+        try {
+
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, user.getIdUser());
+            ps.setInt(2, livre.getIdLivre());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                result = true;
+            }
+        } catch (SQLException sqle) {
+            System.err.println("MySqlLivreDAO, method  List<Livre> getAllLivre() : \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+        return result;
+    }
+
+    @Override
+    public void registerPage(int pageSelect, int idLocation) {
+        Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        c = MySqlDaoFactory.getInstance().getConnection();
+        String sql = "UPDATE location SET location.pageSelect = ? WHERE location.idLocation = ? ";
+
+        try {
+
+            ps = c.prepareStatement(sql);
+            ps.setInt(1, pageSelect);
+            ps.setInt(2, idLocation);
+            ps.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.err.println("MySqlLivreDAO, method  registerPage(int pageSelect, Livre livre): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+    }
 
 }

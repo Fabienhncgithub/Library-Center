@@ -40,5 +40,8 @@ public interface UserDao {
 
     public void insertQuestion(String question, User user);
 
+    public boolean addProfil(User user, Bibliotheque bibliotheque);
+
+
 
 }

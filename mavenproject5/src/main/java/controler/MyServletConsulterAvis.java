@@ -29,14 +29,10 @@ public class MyServletConsulterAvis extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         int idLivreSelected = Integer.parseInt(request.getParameter("idLivreSelected"));
         Livre livre = facade.getLivre().getLivreById(idLivreSelected);
-
-        
-      
         List<Avis> listeAvis = facade.getBiblitoheque().getAllAvisbyIdLivre(idLivreSelected);
         int nbrAvis = listeAvis.size();
-        
-  request.setAttribute("nbrAvis", nbrAvis);      
-request.setAttribute("livre", livre);
+        request.setAttribute("nbrAvis", nbrAvis);
+        request.setAttribute("livre", livre);
         request.setAttribute("listeAvis", listeAvis);
         request.getRequestDispatcher("avisLivre.jsp").forward(request, response);
 

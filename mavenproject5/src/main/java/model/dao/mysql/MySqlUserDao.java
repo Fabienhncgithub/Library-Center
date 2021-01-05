@@ -362,4 +362,49 @@ public class MySqlUserDao implements UserDao {
         }
         return listRole;
     }
+
+    @Override
+    public boolean addProfil(User user, Bibliotheque bibliotheque) {
+           Connection c = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+
+        String sql = "SELECT idUser FROM user WHERE user.email = ?";
+
+        String sql1 = "INSERT INTO user(nom, prenom, email, password,  role, adresse)  VALUES (?, ?, ?, ?, ?, ?)";
+
+        String sql2 = "INSERT INTO inscription(idUser, idBibliotheque) VALUES (?,?)";
+
+        try {
+            c = MySqlDaoFactory.getInstance().getConnection();
+            ps = c.prepareStatement(sql);
+            ps.setString(1, user.getEmail());
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                result = true;
+                ps = c.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, user.getNom());
+                ps.setString(2, user.getPrenom());
+                ps.setString(3, user.getEmail());
+                ps.setString(4, user.getPassword());
+                ps.setInt(5, user.getRole().getIdRole());
+                ps.setString(6, user.getAdresse());
+                ps.executeUpdate();
+
+                rs = ps.getGeneratedKeys();
+                ps = c.prepareStatement(sql2);
+                rs.next();
+                ps.setInt(1, rs.getInt(1));
+                ps.setInt(2, bibliotheque.getIdBibliotheque());
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException sqle) {
+            System.err.println("MySqlUserDao, method signIn(User user, int idBibliotheque): \n" + sqle.getMessage());
+        } finally {
+            MySqlDaoFactory.closeAll(rs, ps, c);
+        }
+        return result;
+    }
 }

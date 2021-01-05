@@ -17,6 +17,7 @@ public class Location {
     private Exemplaire exemplaire;
     private int idUser;
     private Date dateLocation;
+    private int pageSelect;
 
     public Location(int idLocation, Exemplaire exemplaire, int idUser, Date dateLocation) {
         this.idLocation = idLocation;
@@ -29,6 +30,14 @@ public class Location {
         this.exemplaire = exemplaire;
         this.idUser = idUser;
         this.dateLocation = dateLocation;
+    }
+
+    public Location(int idLocation, Exemplaire exemplaire, int idUser, Date dateLocation, int pageSelect) {
+        this.idLocation = idLocation;
+        this.exemplaire = exemplaire;
+        this.idUser = idUser;
+        this.dateLocation = dateLocation;
+        this.pageSelect = pageSelect;
     }
     
     
@@ -73,4 +82,14 @@ public class Location {
         this.dateLocation = dateLocation;
     }
 
+    public int getPageSelect() {
+        return pageSelect;
+    }
+
+    public void setPageSelect(int page) {
+        this.pageSelect = page;
+    }
+
+    
+    
 }

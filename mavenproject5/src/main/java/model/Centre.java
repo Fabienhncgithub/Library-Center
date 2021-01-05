@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,11 +90,18 @@ public class Centre {
         res = res.substring(1, res.length() - 1);
         String[] keyValuePairs = res.split(",");
         Map<String, String> mapTitreLivre = new HashMap<>();
-
         for (String p : keyValuePairs) {
             String[] entry = p.split("=");
             mapTitreLivre.put(entry[0].trim(), entry[1].trim());
         }
         return mapTitreLivre;
     }
+
+    public void rendreEbook() {
+        AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        BibliothequeDao bibliothequeDao = factory.createBibliothequeDao();
+        bibliothequeDao.rendreEbook();
+
+    }
+
 }

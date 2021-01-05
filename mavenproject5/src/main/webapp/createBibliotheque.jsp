@@ -7,8 +7,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <jsp:include page="menu-admin.jsp"/>
+        <title>Management Bibliothèque</title>
+     <c:choose>
+            <c:when test = "${user.role.idRole == 4}">
+                <jsp:include page="menu-admin.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
+        </c:choose>
     <h1>Management Bibliothèque</h1>
 </head>
 <body>

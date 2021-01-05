@@ -38,13 +38,11 @@ public interface BibliothequeDao {
 
     public List<Livre> getAllLivreByBibliotheque(Bibliotheque bibliotheque);
 
-    public List<Exemplaire> getAllExemplaireByTypeByBibliotheque(int idLivre,Bibliotheque bibliotheque);
-
+    public List<Exemplaire> getAllExemplaireByTypeByBibliotheque(int idLivre, Bibliotheque bibliotheque);
 
     public List<Date> getDateLocation(int idExemplaireSelected);
 
     public void location(Location location);
-
 
     public Exemplaire getExemplaireById(int idExemplaire);
 
@@ -80,12 +78,8 @@ public interface BibliothequeDao {
 
     public void validationCotisation(User user, Bibliotheque bibliotheque);
 
-
-
     public void rendreLocation(Location location, User user);
 
-
-
-
+    public void rendreEbook();
 
 }

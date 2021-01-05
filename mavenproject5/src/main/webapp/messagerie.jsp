@@ -9,15 +9,20 @@
     <head>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-
-        <c:choose>
+        <title>messagerie</title>
+     <c:choose>
             <c:when test = "${user.role.idRole == 4}">
                 <jsp:include page="menu-admin.jsp"/>
             </c:when>
-            <c:when test = "${user.role.idRole == 1}">
-                <jsp:include page="menu-client.jsp"/>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
             </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
         </c:choose>
     </head>
     <body>
@@ -25,25 +30,26 @@
         <div class="conteneur">
             <table class="table table-striped">
                 <form action="MyServletmessaqerie.do" method="post">
-                    <th>ID QUESTION</th><th>ID USER</th><th>QUESTION</th>
+              
+                    <th>QUESTION</th>
                         <c:choose>
                             <c:when test = "${user.role.idRole == 4}">
                             <th>REPONSE</th>
-                            <th>ID USER REPONSE</th>
+                
                             </c:when>
                         </c:choose>
-                    <th>REPONSE</th>
+                    <th>ACTION</th>
                         <c:forEach items="${listeQuestionByUser}" var="faq" >
                         <tr>
-                            <td>${faq.idQuestion}</td>
-                            <td>${faq.idUserQuestion}</td>          
+             
+                              
                             <td>${faq.question}</td>
                             <td>${faq.reponse}</td> 
-                            <td>${faq.idUserReponse}</td> 
+            
 
 
                             <c:choose>
-                                <c:when test = "${user.role.idRole == 4 && faq.reponse == null}">
+                                <c:when test = "${user.role.idRole != 1 && faq.reponse == null}">
 
 
                             </form>
@@ -54,6 +60,12 @@
                                     <input type="hidden" name="QuestionSelected" value="${faq.question}"/>
                                 </td>
                             </c:when>
+                                <c:otherwise>
+                                       <td> 
+                                        <p class="text-success">répondu</p>
+                                             </td>
+                                </c:otherwise> 
+                                
                         </c:choose>
                         </tr>
                     </c:forEach>

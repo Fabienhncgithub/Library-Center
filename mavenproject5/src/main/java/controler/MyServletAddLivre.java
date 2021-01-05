@@ -49,6 +49,8 @@ public class MyServletAddLivre extends HttpServlet {
         exemplaire.setLivre(livre);
         
         facade.getBiblitoheque().addBook(exemplaire, bibliotheque);
+        
+           response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
 
     }
 }

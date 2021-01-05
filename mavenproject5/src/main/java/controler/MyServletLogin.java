@@ -32,6 +32,7 @@ public class MyServletLogin extends HttpServlet {
         if (AbstractDaoFactory.getFactory() == null) {
             AbstractDaoFactory.setFactory(MySqlDaoFactory.getInstance());
             facade.getBiblitoheque().updateCoti();
+            facade.getCentre().rendreEbook();
         }
     }
 
@@ -87,6 +88,7 @@ public class MyServletLogin extends HttpServlet {
                 } else {
                     request.getSession().setAttribute("user", user);
                     request.getSession().setAttribute("bibliotheque", bibliotheque);
+
                     response.sendRedirect(request.getContextPath() + "/MyServletLivre.do");
                 }
             }

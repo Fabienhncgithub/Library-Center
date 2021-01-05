@@ -5,7 +5,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <jsp:include page="menu-admin.jsp"/>
+        <c:choose>
+            <c:when test = "${user.role.idRole == 4}">
+                <jsp:include page="menu-admin.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 3 }">
+                <jsp:include page="menu-manager.jsp"/>
+            </c:when>
+            <c:when test = "${user.role.idRole == 2 }">
+                <jsp:include page="menu-bibliothecaire.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="menu-client.jsp"/>
+            </c:otherwise>
+        </c:choose>
         <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
         <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css"></script>
 
@@ -54,9 +67,9 @@
             <label for="auteur"> Auteur:</label><input type="text" name="auteur" required/><br/>
             <label for="editeur">  Editeur: </label><input type="text" name="editeur" required/><br/>
             <label for="page"> Page Total:</label><input type="number" name="page" required/><br/>
-            <label for="prix">Prix d'achat: </label><input type="text" name="prix" required/><br/>
+            <label for="prix">Prix d'achat: </label><input type="number" name="prix" required/><br/>
             <div>
-             
+
             </div>
             <div id = "dropzonePreview">
                 <input type="file" value="file"/>

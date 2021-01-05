@@ -21,10 +21,10 @@ public class Livre {
     private String auteur;
     private String editeur;
     private int page;
-    private int prixAchat;
+    private float prixAchat;
     private Double noteTotal;
 
-    public Livre(int idLivre, String titre, String auteur, String editeur, int page, int prixAchat, Double noteTotal) {
+    public Livre(int idLivre, String titre, String auteur, String editeur, int page, float prixAchat, Double noteTotal) {
         this.idLivre = idLivre;
         this.titre = titre;
         this.auteur = auteur;
@@ -92,11 +92,11 @@ public class Livre {
         this.page = page;
     }
 
-    public int getPrixAchat() {
+    public float getPrixAchat() {
         return prixAchat;
     }
 
-    public void setPrixAchat(int prixAchat) {
+    public void setPrixAchat(float prixAchat) {
         this.prixAchat = prixAchat;
     }
 
@@ -161,6 +161,14 @@ public class Livre {
         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
         LivreDao livreDao = factory.createLivreDao();
         return livreDao.getAvisByIdUSerIdLivreSelected(user, livre);
+    }
+
+
+
+    public void registerPage(int pageSelect, int idLocation) {
+         AbstractDaoFactory factory = AbstractDaoFactory.getFactory();
+        LivreDao livreDao = factory.createLivreDao();
+        livreDao.registerPage(pageSelect, idLocation);
     }
 
 }

@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Bibliotheque;
 import model.Facade;
 import model.Role;
 import model.User;
@@ -29,6 +30,8 @@ public class MyServletManageManager extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+            Bibliotheque bibliotheque = (Bibliotheque) request.getSession().getAttribute("bibliotheque");
+        
         User user = new User();
         user.setNom(request.getParameter("nom"));
         user.setPrenom(request.getParameter("prenom"));
@@ -38,8 +41,12 @@ public class MyServletManageManager extends HttpServlet {
         user.setAdresse(request.getParameter("adresse"));
         int idRole = Integer.parseInt(request.getParameter("role"));
         user.setRole(facade.getCentre().getRoleById(idRole));
-        boolean result = facade.getUser().addManager(user);
-
+       boolean result;
+        if(idRole == 3 || idRole ==4){
+        result = facade.getUser().addManager(user);
+        }else{
+         result = facade.getUser().addProfil(user,bibliotheque);
+        }
         String errorMessage;
         if (result) {
             errorMessage = "Utilisateur enregistrée";
